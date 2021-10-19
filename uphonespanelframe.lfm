@@ -1,0 +1,213 @@
+object frPhonesPnl: TfrPhonesPnl
+  Left = 0
+  Height = 174
+  Top = 0
+  Width = 530
+  Anchors = []
+  ClientHeight = 174
+  ClientWidth = 530
+  TabOrder = 0
+  DesignLeft = 311
+  DesignTop = 31
+  object edtCountryCode: TEdit
+    AnchorSideLeft.Control = lblCountryCode
+    AnchorSideTop.Control = lblCountryCode
+    AnchorSideTop.Side = asrBottom
+    Left = 10
+    Height = 23
+    Top = 30
+    Width = 54
+    AutoSize = False
+    BorderSpacing.Top = 5
+    TabOrder = 0
+    Text = 'edtCountryCode'
+  end
+  object btnSelectCountryCode: TButton
+    AnchorSideLeft.Control = edtCountryCode
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = edtCountryCode
+    AnchorSideBottom.Control = edtCountryCode
+    AnchorSideBottom.Side = asrBottom
+    Left = 69
+    Height = 23
+    Top = 30
+    Width = 24
+    Anchors = [akTop, akLeft, akBottom]
+    BorderSpacing.Left = 5
+    Caption = '...'
+    TabOrder = 1
+  end
+  object edtRegionCode: TEdit
+    AnchorSideLeft.Control = lblRegionCode
+    AnchorSideTop.Control = lblRegionCode
+    AnchorSideTop.Side = asrBottom
+    Left = 103
+    Height = 23
+    Top = 30
+    Width = 100
+    AutoSize = False
+    BorderSpacing.Top = 5
+    TabOrder = 2
+    Text = 'edtRegionCode'
+  end
+  object btnSelectRegionCode: TButton
+    AnchorSideLeft.Control = edtRegionCode
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = edtRegionCode
+    AnchorSideBottom.Control = edtRegionCode
+    AnchorSideBottom.Side = asrBottom
+    Left = 208
+    Height = 23
+    Top = 30
+    Width = 25
+    Anchors = [akTop, akLeft, akBottom]
+    BorderSpacing.Left = 5
+    Caption = '...'
+    TabOrder = 3
+  end
+  object edtNumber: TEdit
+    AnchorSideLeft.Control = lblNumber
+    AnchorSideTop.Control = lblNumber
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Side = asrBottom
+    Left = 264
+    Height = 23
+    Top = 30
+    Width = 189
+    AutoSize = False
+    BorderSpacing.Top = 5
+    BorderSpacing.Right = 10
+    TabOrder = 4
+    Text = 'edtNumber'
+  end
+  object memoNote: TMemo
+    AnchorSideLeft.Control = edtCountryCode
+    AnchorSideTop.Control = edtCountryCode
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = btnSelectRegionCode
+    AnchorSideRight.Side = asrBottom
+    Left = 10
+    Height = 66
+    Top = 63
+    Width = 223
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 10
+    BorderSpacing.Bottom = 10
+    Lines.Strings = (
+      'Memo1'
+    )
+    ScrollBars = ssAutoBoth
+    TabOrder = 5
+  end
+  object lblCountryCode: TLabel
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 10
+    Height = 15
+    Top = 10
+    Width = 63
+    BorderSpacing.Left = 10
+    BorderSpacing.Top = 10
+    Caption = 'Код страны'
+  end
+  object lblRegionCode: TLabel
+    AnchorSideLeft.Control = lblCountryCode
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = lblCountryCode
+    Left = 103
+    Height = 15
+    Top = 10
+    Width = 131
+    BorderSpacing.Left = 30
+    Caption = 'Код региона/оператора'
+  end
+  object lblNumber: TLabel
+    AnchorSideLeft.Control = lblRegionCode
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = lblCountryCode
+    Left = 264
+    Height = 15
+    Top = 10
+    Width = 94
+    BorderSpacing.Left = 30
+    Caption = 'Номер телефона'
+  end
+  object btnPnlLeft: TButton
+    AnchorSideLeft.Control = edtNumber
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = edtCountryCode
+    AnchorSideRight.Control = btnPnlRight
+    AnchorSideBottom.Control = edtCountryCode
+    AnchorSideBottom.Side = asrBottom
+    Left = 463
+    Height = 23
+    Top = 30
+    Width = 25
+    Anchors = [akTop, akLeft, akBottom]
+    BorderSpacing.Left = 10
+    BorderSpacing.Right = 5
+    Caption = 'L'
+    TabOrder = 6
+  end
+  object btnPnlRight: TButton
+    AnchorSideLeft.Control = btnPnlLeft
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = edtCountryCode
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = edtCountryCode
+    AnchorSideBottom.Side = asrBottom
+    Left = 493
+    Height = 23
+    Top = 30
+    Width = 25
+    Anchors = [akTop, akLeft, akBottom]
+    BorderSpacing.Left = 5
+    BorderSpacing.Right = 10
+    Caption = 'R'
+    TabOrder = 7
+  end
+  object chbMainContact: TCheckBox
+    AnchorSideLeft.Control = edtNumber
+    AnchorSideTop.Control = edtCountryCode
+    AnchorSideTop.Side = asrBottom
+    Left = 264
+    Height = 19
+    Top = 63
+    Width = 194
+    BorderSpacing.Top = 10
+    Caption = 'Основной контактный телефон'
+    Checked = True
+    State = cbChecked
+    TabOrder = 8
+  end
+  object chbMobile: TCheckBox
+    AnchorSideLeft.Control = edtNumber
+    AnchorSideTop.Control = chbMainContact
+    AnchorSideTop.Side = asrBottom
+    Left = 264
+    Height = 19
+    Top = 92
+    Width = 127
+    BorderSpacing.Top = 10
+    Caption = 'Мобильный номер'
+    Checked = True
+    State = cbChecked
+    TabOrder = 9
+  end
+  object Bevel1: TBevel
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = memoNote
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = btnPnlLeft
+    AnchorSideRight.Side = asrBottom
+    Left = 10
+    Height = 2
+    Top = 139
+    Width = 478
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Left = 10
+    BorderSpacing.Top = 10
+    BorderSpacing.Bottom = 10
+  end
+end

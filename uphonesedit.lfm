@@ -1,0 +1,106 @@
+object frmPhonesEdit: TfrmPhonesEdit
+  Left = 311
+  Height = 344
+  Top = 31
+  Width = 555
+  Caption = 'frmPhonesEdit'
+  ClientHeight = 344
+  ClientWidth = 555
+  FormStyle = fsStayOnTop
+  KeyPreview = True
+  OnClose = FormClose
+  OnCreate = FormCreate
+  OnShow = FormShow
+  object btnRight: TButton
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 470
+    Height = 25
+    Top = 309
+    Width = 75
+    Anchors = [akRight, akBottom]
+    BorderSpacing.Around = 10
+    Caption = 'btnRight'
+    TabOrder = 0
+  end
+  object btnLeft: TButton
+    AnchorSideRight.Control = btnRight
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 385
+    Height = 25
+    Top = 309
+    Width = 75
+    Anchors = [akRight, akBottom]
+    BorderSpacing.Around = 10
+    Caption = 'btnLeft'
+    TabOrder = 1
+  end
+  object scrboxPhonesPnl: TScrollBox
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = btnRight
+    Left = 0
+    Height = 299
+    Top = 0
+    Width = 555
+    HorzScrollBar.Increment = 1
+    HorzScrollBar.Page = 1
+    HorzScrollBar.Smooth = True
+    HorzScrollBar.Tracking = True
+    VertScrollBar.Increment = 1
+    VertScrollBar.Page = 1
+    VertScrollBar.Smooth = True
+    VertScrollBar.Tracking = True
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    ParentBackground = True
+    TabOrder = 2
+  end
+  object actlistPhonesEdit: TActionList
+    Left = 232
+    Top = 184
+    object ActPnlAdd: TAction
+      Category = 'panels'
+      Caption = 'ActPnlAdd'
+      OnExecute = ActPnlAddExecute
+    end
+    object ActPnlRemove: TAction
+      Category = 'panels'
+      Caption = 'ActPnlRemove'
+      OnExecute = ActPnlRemoveExecute
+    end
+    object ActbtnOK: TAction
+      Category = 'app'
+      Caption = 'ActbtnOK'
+      OnExecute = ActbtnOKExecute
+    end
+    object ActbtnCancel: TAction
+      Category = 'app'
+      Caption = 'ActbtnCancel'
+      OnExecute = ActbtnCancelExecute
+    end
+    object ActChbMainContactsStateChg: TAction
+      Category = 'panels'
+      Caption = 'ActChbMainContactsStateChg'
+      OnExecute = ActChbMainContactsStateChgExecute
+    end
+    object ActChbMainContactCheck: TAction
+      Category = 'panels'
+      Caption = 'ActChbMainContactCheck'
+      OnExecute = ActChbMainContactCheckExecute
+    end
+    object ActChbMobileStateChg: TAction
+      Caption = 'ActChbMobileStateChg'
+      OnExecute = ActChbMobileStateChgExecute
+    end
+    object ActShowHidePnlObjListBtns: TAction
+      Category = 'panels'
+      Caption = 'ActShowHidePnlObjListBtns'
+      OnExecute = ActShowHidePnlObjListBtnsExecute
+    end
+  end
+end
