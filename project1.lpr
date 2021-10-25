@@ -10,7 +10,7 @@ uses
   athreads,
   {$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, uphonesedit, uphonespanelframe;
+  Forms, uphonesedit, uphonespanelframe, ibexpress;
 
 {$R *.res}
 

@@ -67,10 +67,11 @@ object frmPhonesEdit: TfrmPhonesEdit
     Left = 10
     Height = 25
     Top = 309
-    Width = 75
+    Width = 134
     Anchors = [akLeft, akBottom]
     BorderSpacing.Around = 10
     Caption = 'Подключить справочник телефонов'
+    OnClick = btnPhoneBaseConnClick
     TabOrder = 3
   end
   object actlistPhonesEdit: TActionList
@@ -115,5 +116,38 @@ object frmPhonesEdit: TfrmPhonesEdit
       Caption = 'ActShowHidePnlObjListBtns'
       OnExecute = ActShowHidePnlObjListBtnsExecute
     end
+    object ActUIRefresh: TAction
+      Category = 'app'
+      Caption = 'ActUIRefresh'
+      OnExecute = ActUIRefreshExecute
+    end
+  end
+  object IBTransaction1: TIBTransaction
+    Active = False
+    Params.Strings = (
+      'read'
+      'read_committed'
+      'rec_version'
+      'nowait'
+    )
+    Left = 184
+    Top = 83
+  end
+  object IBDatabase1: TIBDatabase
+    Connected = False
+    LoginPrompt = False
+    AllowStreamedConnected = False
+    DatabaseName = 'localhost/30764:D:\Archive\code_source\leybasoft_arm_v5\dbase\PHONES.FDB'
+    Params.Strings = (
+      'lc_ctype=UTF8'
+      'user_name=SYSDBA'
+      'password=cooladmin'
+    )
+    LibraryName = 'D:\Portable_program\Firebird_server\Firebird_3_0_7_x64\fbclient.dll'
+    DefaultTransaction = IBTransaction1
+    IdleTimer = 0
+    TraceFlags = []
+    Left = 71
+    Top = 83
   end
 end

@@ -21,8 +21,8 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="1"/>
-      <RevisionNr Value="2"/>
-      <BuildNr Value="2"/>
+      <RevisionNr Value="3"/>
+      <BuildNr Value="5"/>
       <Attributes pvaDebug="True"/>
     </VersionInfo>
     <BuildModes Count="3" Active="Debug">
@@ -105,16 +105,19 @@
     <RunParams>
       <FormatVersion Value="2"/>
     </RunParams>
-    <RequiredPackages Count="1">
+    <RequiredPackages Count="2">
       <Item1>
-        <PackageName Value="LCL"/>
+        <PackageName Value="ibexpress"/>
       </Item1>
+      <Item2>
+        <PackageName Value="LCL"/>
+      </Item2>
     </RequiredPackages>
-    <Units Count="4">
+    <Units Count="5">
       <Unit0>
         <Filename Value="project1.lpr"/>
         <IsPartOfProject Value="True"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="25"/>
       </Unit0>
       <Unit1>
         <Filename Value="uphonesedit.pas"/>
@@ -123,9 +126,13 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="210"/>
-        <CursorPos X="28" Y="221"/>
-        <UsageCount Value="21"/>
+        <TopLine Value="419"/>
+        <CursorPos Y="425"/>
+        <UsageCount Value="25"/>
+        <Bookmarks Count="2">
+          <Item0 X="35" Y="244" ID="1"/>
+          <Item1 Y="94" ID="2"/>
+        </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -138,7 +145,7 @@
         <EditorIndex Value="1"/>
         <TopLine Value="35"/>
         <CursorPos Y="43"/>
-        <UsageCount Value="21"/>
+        <UsageCount Value="25"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit2>
@@ -152,42 +159,138 @@
         <CursorPos X="41" Y="1519"/>
         <UsageCount Value="10"/>
       </Unit3>
+      <Unit4>
+        <Filename Value="C:\laz_new\ccr\ibx_rik\runtime\IBDatabase.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="322"/>
+        <CursorPos X="3" Y="328"/>
+        <UsageCount Value="10"/>
+      </Unit4>
     </Units>
     <Debugger>
       <Backend Value="{B03F610B-0B41-4F4B-816D-5925DEAA0040}"/>
     </Debugger>
-    <JumpHistory Count="8" HistoryIndex="7">
+    <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="uphonespanelframe.pas"/>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="429" TopLine="422"/>
       </Position1>
       <Position2>
-        <Filename Value="uphonespanelframe.pas"/>
-        <Caret Line="46" Column="37" TopLine="37"/>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="430" TopLine="422"/>
       </Position2>
       <Position3>
-        <Filename Value="uphonespanelframe.pas"/>
-        <Caret Line="43" TopLine="37"/>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="432" TopLine="426"/>
       </Position3>
       <Position4>
-        <Filename Value="uphonespanelframe.pas"/>
-        <Caret Line="46" Column="25" TopLine="37"/>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="435" TopLine="426"/>
       </Position4>
       <Position5>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="74" Column="48" TopLine="111"/>
+        <Caret Line="437" TopLine="429"/>
       </Position5>
       <Position6>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="53" Column="121" TopLine="115"/>
+        <Caret Line="438" TopLine="429"/>
       </Position6>
       <Position7>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="54" Column="15" TopLine="44"/>
+        <Caret Line="439" TopLine="429"/>
       </Position7>
       <Position8>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="55" Column="84" TopLine="49"/>
+        <Caret Line="436" TopLine="417"/>
       </Position8>
+      <Position9>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="428" TopLine="427"/>
+      </Position9>
+      <Position10>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="429" TopLine="427"/>
+      </Position10>
+      <Position11>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="430" TopLine="427"/>
+      </Position11>
+      <Position12>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="433" TopLine="427"/>
+      </Position12>
+      <Position13>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="435" TopLine="427"/>
+      </Position13>
+      <Position14>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="437" TopLine="433"/>
+      </Position14>
+      <Position15>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="438" TopLine="433"/>
+      </Position15>
+      <Position16>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="439" TopLine="433"/>
+      </Position16>
+      <Position17>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="435" Column="8" TopLine="433"/>
+      </Position17>
+      <Position18>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="428" TopLine="421"/>
+      </Position18>
+      <Position19>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="429" TopLine="421"/>
+      </Position19>
+      <Position20>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="430" TopLine="421"/>
+      </Position20>
+      <Position21>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="433" TopLine="421"/>
+      </Position21>
+      <Position22>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="434" TopLine="422"/>
+      </Position22>
+      <Position23>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="437" TopLine="431"/>
+      </Position23>
+      <Position24>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="438" TopLine="431"/>
+      </Position24>
+      <Position25>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="439" TopLine="431"/>
+      </Position25>
+      <Position26>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="435" TopLine="431"/>
+      </Position26>
+      <Position27>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="460" TopLine="447"/>
+      </Position27>
+      <Position28>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="244" Column="35" TopLine="238"/>
+      </Position28>
+      <Position29>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="94" TopLine="159"/>
+      </Position29>
+      <Position30>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="425" TopLine="424"/>
+      </Position30>
     </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
@@ -226,4 +329,26 @@
       </Options>
     </Linking>
   </CompilerOptions>
+  <Debugging>
+    <BreakPoints Count="1">
+      <Item1>
+        <Kind Value="bpkSource"/>
+        <WatchScope Value="wpsLocal"/>
+        <WatchKind Value="wpkWrite"/>
+        <Source Value="uphonesedit.pas"/>
+        <Line Value="274"/>
+      </Item1>
+    </BreakPoints>
+    <Watches Count="3">
+      <Item1>
+        <Expression Value="b"/>
+      </Item1>
+      <Item2>
+        <Expression Value="c"/>
+      </Item2>
+      <Item3>
+        <Expression Value="a"/>
+      </Item3>
+    </Watches>
+  </Debugging>
 </CONFIG>
