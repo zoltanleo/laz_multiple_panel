@@ -28,6 +28,7 @@ type
     actlistPhonesEdit: TActionList;
     btnRight: TButton;
     btnLeft: TButton;
+    btnPhoneBaseConn: TButton;
     scrboxPhonesPnl: TScrollBox;
     procedure ActChbMainContactCheckExecute(Sender: TObject);
     procedure ActChbMainContactsStateChgExecute(Sender: TObject);
@@ -42,6 +43,7 @@ type
     procedure FormShow(Sender: TObject);
   private
     FFrmEditMode: TEditMode;
+    FIsPhoneBaseConn: Boolean;//флаг, подключена ли форма к phones.fdb
     FMaxPnlCount: PtrInt;//макс.количество панелей на форме для добавления телефонов
     FPnlObjList: TPnlObjList;
     FPnlTagCounter: PtrInt;//счетчик тэгов для новых панелей (для внутренних нужд)
@@ -50,6 +52,7 @@ type
     property MaxPnlCount: PtrInt read FMaxPnlCount;//макс.кол-во панелей (из настроек)
     property FrmEditMode: TEditMode read FFrmEditMode write FFrmEditMode;
     property PnlObjList: TPnlObjList read FPnlObjList write SetPnlObjList;//список объектов-фреймов
+    property IsPhoneBaseConn: Boolean read FIsPhoneBaseConn write FIsPhoneBaseConn;
     procedure TempAct(Sender: TObject);
   end;
 
@@ -72,6 +75,7 @@ begin
   FPnlTagCounter:= 0;//инициализируем счетчик
   scrboxPhonesPnl.BorderStyle:= bsNone;
   FrmEditMode:= emAdd;//по умолчанию
+  FIsPhoneBaseConn:= False;//по умолчанию
 
   PnlObjList:= TPnlObjList.Create(True);
 
@@ -91,15 +95,22 @@ begin
     if TObject(Self.Controls[i]).InheritsFrom(TButton) then
     begin
       TButton(Self.Controls[i]).AutoSize:= True;
-      if (txtlen < Self.Canvas.TextWidth(TButton(Self.Controls[i]).Caption)) then
-        txtlen:= Self.Canvas.TextWidth(TButton(Self.Controls[i]).Caption);
+      if not TButton(Self.Controls[i]).Equals(btnPhoneBaseConn) then
+        if (txtlen < Self.Canvas.TextWidth(TButton(Self.Controls[i]).Caption)) then
+          txtlen:= Self.Canvas.TextWidth(TButton(Self.Controls[i]).Caption);
     end;
 
   for i:= 0 to Pred(Self.ControlCount) do
     if TObject(Self.Controls[i]).InheritsFrom(TButton) then
     begin
       TButton(Self.Controls[i]).AutoSize:= False;
-      TButton(Self.Controls[i]).Width:= txtlen + Self.Canvas.TextWidth('W') * 2;
+
+      if TButton(Self.Controls[i]).Equals(btnPhoneBaseConn)
+      then
+        TButton(Self.Controls[i]).Width:= Self.Canvas.TextWidth(btnPhoneBaseConn.Caption)
+                                                          + Self.Canvas.TextWidth('W') * 2
+      else
+        TButton(Self.Controls[i]).Width:= txtlen + Self.Canvas.TextWidth('W') * 2;
     end;
 
   { #todo : реализовать подключение к таблицам с кодами регионов }
@@ -108,6 +119,7 @@ end;
 procedure TfrmPhonesEdit.FormShow(Sender: TObject);
 begin
   ActPnlAddExecute(Sender);
+  btnPhoneBaseConn.Enabled:= not IsPhoneBaseConn;
 end;
 
 procedure TfrmPhonesEdit.SetPnlObjList(AValue: TPnlObjList);
@@ -188,15 +200,11 @@ begin
           btnPnlRight.Caption:= '-';
           btnPnlLeft.OnClick:= @ActPnlAddExecute;
           btnPnlRight.OnClick:= @ActPnlRemoveExecute;
-          //btnPnlLeft.Visible:= (frIndex < Pred(MaxPnlCount)) and (FrmEditMode <> emEdit);
-          //btnPnlRight.Visible:= (frIndex > 0) and (FrmEditMode <> emEdit);
         {$ELSE}
           btnPnlLeft.Caption:= '-';
           btnPnlRight.Caption:= '+';
           btnPnlLeft.OnClick:= @ActPnlRemoveExecute;
           btnPnlRight.OnClick:= @ActPnlAddExecute;
-          //btnPnlLeft.Visible:= (frIndex > 0) and (FrmEditMode <> emEdit);
-          //btnPnlRight.Visible:= (frIndex < Pred(MaxPnlCount)) and (FrmEditMode <> emEdit);
         {$ENDIF}
 
         Anchors:= [akLeft, akTop, akRight];
@@ -208,6 +216,9 @@ begin
         edtRegionCode.Clear;
         edtNumber.Clear;
         memoNote.Clear;
+
+        btnSelectCountryCode.Enabled:= IsPhoneBaseConn;
+        btnSelectRegionCode.Enabled:= IsPhoneBaseConn;
 
         if edtCountryCode.CanSetFocus then edtCountryCode.SetFocus;
       end;

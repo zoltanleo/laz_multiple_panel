@@ -60,6 +60,19 @@ object frmPhonesEdit: TfrmPhonesEdit
     ParentBackground = True
     TabOrder = 2
   end
+  object btnPhoneBaseConn: TButton
+    AnchorSideLeft.Control = Owner
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 10
+    Height = 25
+    Top = 309
+    Width = 75
+    Anchors = [akLeft, akBottom]
+    BorderSpacing.Around = 10
+    Caption = 'Подключить справочник телефонов'
+    TabOrder = 3
+  end
   object actlistPhonesEdit: TActionList
     Left = 232
     Top = 184

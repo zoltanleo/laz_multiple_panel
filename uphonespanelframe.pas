@@ -5,7 +5,7 @@ unit uphonespanelframe;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, StdCtrls, ExtCtrls;
+  Classes, SysUtils, Forms, Controls, StdCtrls, ExtCtrls, LazUTF8;
 
 type
 
@@ -26,6 +26,7 @@ type
     lblNumber: TLabel;
     lblRegionCode: TLabel;
     memoNote: TMemo;
+    procedure edtCountryCodeKeyPress(Sender: TObject; var Key: char);
   private
 
   public
@@ -35,6 +36,13 @@ type
 implementation
 
 {$R *.lfm}
+
+{ TfrPhonesPnl }
+
+procedure TfrPhonesPnl.edtCountryCodeKeyPress(Sender: TObject; var Key: char);
+begin
+  if not (Key in ['0'..'9']) then Key:= #0;
+end;
 
 end.
 

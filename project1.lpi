@@ -21,8 +21,8 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="1"/>
-      <RevisionNr Value="1"/>
-      <BuildNr Value="1"/>
+      <RevisionNr Value="2"/>
+      <BuildNr Value="2"/>
       <Attributes pvaDebug="True"/>
     </VersionInfo>
     <BuildModes Count="3" Active="Debug">
@@ -110,11 +110,11 @@
         <PackageName Value="LCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="3">
+    <Units Count="4">
       <Unit0>
         <Filename Value="project1.lpr"/>
         <IsPartOfProject Value="True"/>
-        <UsageCount Value="20"/>
+        <UsageCount Value="21"/>
       </Unit0>
       <Unit1>
         <Filename Value="uphonesedit.pas"/>
@@ -123,9 +123,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="79"/>
-        <CursorPos X="37" Y="74"/>
-        <UsageCount Value="20"/>
+        <TopLine Value="210"/>
+        <CursorPos X="28" Y="221"/>
+        <UsageCount Value="21"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -136,15 +136,59 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <EditorIndex Value="1"/>
-        <UsageCount Value="20"/>
+        <TopLine Value="35"/>
+        <CursorPos Y="43"/>
+        <UsageCount Value="21"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit2>
+      <Unit3>
+        <Filename Value="..\leybasoft_base_br\umain.pas"/>
+        <ComponentName Value="frmMain"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1513"/>
+        <CursorPos X="41" Y="1519"/>
+        <UsageCount Value="10"/>
+      </Unit3>
     </Units>
     <Debugger>
       <Backend Value="{B03F610B-0B41-4F4B-816D-5925DEAA0040}"/>
     </Debugger>
-    <JumpHistory HistoryIndex="-1"/>
+    <JumpHistory Count="8" HistoryIndex="7">
+      <Position1>
+        <Filename Value="uphonespanelframe.pas"/>
+      </Position1>
+      <Position2>
+        <Filename Value="uphonespanelframe.pas"/>
+        <Caret Line="46" Column="37" TopLine="37"/>
+      </Position2>
+      <Position3>
+        <Filename Value="uphonespanelframe.pas"/>
+        <Caret Line="43" TopLine="37"/>
+      </Position3>
+      <Position4>
+        <Filename Value="uphonespanelframe.pas"/>
+        <Caret Line="46" Column="25" TopLine="37"/>
+      </Position4>
+      <Position5>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="74" Column="48" TopLine="111"/>
+      </Position5>
+      <Position6>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="53" Column="121" TopLine="115"/>
+      </Position6>
+      <Position7>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="54" Column="15" TopLine="44"/>
+      </Position7>
+      <Position8>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="55" Column="84" TopLine="49"/>
+      </Position8>
+    </JumpHistory>
   </ProjectOptions>
   <CompilerOptions>
     <Version Value="11"/>
