@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  ActnList, LCLType, LazUTF8, uphonespanelframe, Generics.Collections ;
+  ActnList, LCLType, LazUTF8, uphonespanelframe, uselectcountrycode, IBDatabase,
+  IBQuery, Generics.Collections;
 
 type
   //режим вызова модального окна: добавление/редактирование записи
@@ -20,6 +21,9 @@ type
     ActChbMainContactsStateChg: TAction;
     ActChbMainContactCheck: TAction;
     ActChbMobileStateChg: TAction;
+    ActSelectCountryCode: TAction;
+    ActSelectRegionCode: TAction;
+    ActUIRefresh: TAction;
     ActShowHidePnlObjListBtns: TAction;
     ActPnlAdd: TAction;
     ActPnlRemove: TAction;
@@ -28,6 +32,10 @@ type
     actlistPhonesEdit: TActionList;
     btnRight: TButton;
     btnLeft: TButton;
+    btnPhoneBaseConn: TButton;
+    IBDatabase1: TIBDatabase;
+    qryPhone: TIBQuery;
+    IBTransaction1: TIBTransaction;
     scrboxPhonesPnl: TScrollBox;
     procedure ActChbMainContactCheckExecute(Sender: TObject);
     procedure ActChbMainContactsStateChgExecute(Sender: TObject);
@@ -36,13 +44,22 @@ type
     procedure ActPnlRemoveExecute(Sender: TObject);
     procedure ActbtnCancelExecute(Sender: TObject);
     procedure ActbtnOKExecute(Sender: TObject);
+    procedure ActSelectCountryCodeExecute(Sender: TObject);
+    procedure ActSelectRegionCodeExecute(Sender: TObject);
     procedure ActShowHidePnlObjListBtnsExecute(Sender: TObject);
+    procedure ActUIRefreshExecute(Sender: TObject);
+    procedure btnPhoneBaseConnClick(Sender: TObject);
     procedure FormClose(Sender: TObject; var CloseAction: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
     FFrmEditMode: TEditMode;
+    FIDPhoneCountry: PtrInt;//ID последней выбранной страны (default -1)
+    FIDPhoneRegion: PtrInt;//ID последнего выбранного региона (default -1)
+    FIsPhoneBaseConn: Boolean;//флаг, подключена ли форма к phones.fdb
     FMaxPnlCount: PtrInt;//макс.количество панелей на форме для добавления телефонов
+    FPhoneBase: TIBDataBase;//ссылка на наследник TIBDataBase, передаваемый в форму
+    FPhoneTrans: TIBTransaction;//ссылка на наследник TIBTransaction, передаваемый в форму
     FPnlObjList: TPnlObjList;
     FPnlTagCounter: PtrInt;//счетчик тэгов для новых панелей (для внутренних нужд)
     procedure SetPnlObjList(AValue: TPnlObjList);
@@ -50,6 +67,11 @@ type
     property MaxPnlCount: PtrInt read FMaxPnlCount;//макс.кол-во панелей (из настроек)
     property FrmEditMode: TEditMode read FFrmEditMode write FFrmEditMode;
     property PnlObjList: TPnlObjList read FPnlObjList write SetPnlObjList;//список объектов-фреймов
+    property IsPhoneBaseConn: Boolean read FIsPhoneBaseConn write FIsPhoneBaseConn;
+    property PhoneBase: TIBDataBase read FPhoneBase write FPhoneBase;
+    property PhoneTrans: TIBTransaction read FPhoneTrans write FPhoneTrans;
+    property IDPhoneCountry: PtrInt read FIDPhoneCountry write FIDPhoneCountry;
+    property IDPhoneRegion: PtrInt read FIDPhoneRegion write FIDPhoneRegion;
     procedure TempAct(Sender: TObject);
   end;
 
@@ -72,6 +94,17 @@ begin
   FPnlTagCounter:= 0;//инициализируем счетчик
   scrboxPhonesPnl.BorderStyle:= bsNone;
   FrmEditMode:= emAdd;//по умолчанию
+  FIsPhoneBaseConn:= False;//по умолчанию
+  FPhoneBase:= nil;//инициируем
+  FPhoneTrans:= nil;//инициируем
+  FIDPhoneCountry:= -1;
+  FIDPhoneRegion:= -1;
+
+  with qryPhone do
+  begin
+    Database:= PhoneBase;
+    Transaction:= PhoneTrans;
+  end;
 
   PnlObjList:= TPnlObjList.Create(True);
 
@@ -91,16 +124,32 @@ begin
     if TObject(Self.Controls[i]).InheritsFrom(TButton) then
     begin
       TButton(Self.Controls[i]).AutoSize:= True;
-      if (txtlen < Self.Canvas.TextWidth(TButton(Self.Controls[i]).Caption)) then
-        txtlen:= Self.Canvas.TextWidth(TButton(Self.Controls[i]).Caption);
+      if not TButton(Self.Controls[i]).Equals(btnPhoneBaseConn) then
+        if (txtlen < Self.Canvas.TextWidth(TButton(Self.Controls[i]).Caption)) then
+          txtlen:= Self.Canvas.TextWidth(TButton(Self.Controls[i]).Caption);
     end;
 
   for i:= 0 to Pred(Self.ControlCount) do
     if TObject(Self.Controls[i]).InheritsFrom(TButton) then
     begin
       TButton(Self.Controls[i]).AutoSize:= False;
-      TButton(Self.Controls[i]).Width:= txtlen + Self.Canvas.TextWidth('W') * 2;
+
+      if TButton(Self.Controls[i]).Equals(btnPhoneBaseConn)
+      then
+        TButton(Self.Controls[i]).Width:= Self.Canvas.TextWidth(btnPhoneBaseConn.Caption)
+                                                          + Self.Canvas.TextWidth('W') * 2
+      else
+        TButton(Self.Controls[i]).Width:= txtlen + Self.Canvas.TextWidth('W') * 2;
     end;
+
+  //задаем инимальную ширину, чтобы кнопки не наезжали друг на друга
+  Self.Constraints.MinWidth:= 0;
+
+  for i:= 0 to Pred(Self.ControlCount) do
+    if TObject(Self.Controls[i]).InheritsFrom(TButton) then
+      Self.Constraints.MinWidth:= Self.Constraints.MinWidth
+                                    + TButton(Self.Controls[i]).Width
+                                      + TButton(Self.Controls[i]).BorderSpacing.Around;
 
   { #todo : реализовать подключение к таблицам с кодами регионов }
 end;
@@ -108,6 +157,7 @@ end;
 procedure TfrmPhonesEdit.FormShow(Sender: TObject);
 begin
   ActPnlAddExecute(Sender);
+  btnPhoneBaseConnClick(Sender);
 end;
 
 procedure TfrmPhonesEdit.SetPnlObjList(AValue: TPnlObjList);
@@ -149,8 +199,11 @@ begin
         AnchorSideLeft.Side:= asrLeft;
         AnchorSideRight.Side:= asrRight;
         chbMainContact.Checked:= (frIndex = 0);//чекаем только на верхней панели
+        CountryCode:= -1;
         chbMainContact.OnChange:= @ActChbMainContactCheckExecute;
         chbMobile.OnChange:= @ActChbMobileStateChgExecute;
+        btnSelectCountryCode.OnClick:= @ActSelectCountryCodeExecute;
+        btnSelectRegionCode.OnClick:= @ActSelectRegionCodeExecute;
         frPhonesPnl.OnDblClick:= @TempAct;
 
         if (frIndex = 0) //первый элемент списка (т.е. самый верхний фрэйм на форме)
@@ -188,15 +241,11 @@ begin
           btnPnlRight.Caption:= '-';
           btnPnlLeft.OnClick:= @ActPnlAddExecute;
           btnPnlRight.OnClick:= @ActPnlRemoveExecute;
-          //btnPnlLeft.Visible:= (frIndex < Pred(MaxPnlCount)) and (FrmEditMode <> emEdit);
-          //btnPnlRight.Visible:= (frIndex > 0) and (FrmEditMode <> emEdit);
         {$ELSE}
           btnPnlLeft.Caption:= '-';
           btnPnlRight.Caption:= '+';
           btnPnlLeft.OnClick:= @ActPnlRemoveExecute;
           btnPnlRight.OnClick:= @ActPnlAddExecute;
-          //btnPnlLeft.Visible:= (frIndex > 0) and (FrmEditMode <> emEdit);
-          //btnPnlRight.Visible:= (frIndex < Pred(MaxPnlCount)) and (FrmEditMode <> emEdit);
         {$ENDIF}
 
         Anchors:= [akLeft, akTop, akRight];
@@ -210,9 +259,8 @@ begin
         memoNote.Clear;
 
         if edtCountryCode.CanSetFocus then edtCountryCode.SetFocus;
+        ActUIRefreshExecute(Sender);//обновляем UI  соответственно настройкам и флагам
       end;
-
-      //ActChbMainContactsStateChgExecute(PnlObjList.Items[frIndex]);//помечаем chbMainContact на этом фрейме;
     except
       on E:Exception do
       begin
@@ -247,8 +295,8 @@ begin
     then ParentCtrl:= TfrPhonesPnl(Sender)
     else
       if TObject(Sender).InheritsFrom(TCheckBox)
-      then ParentCtrl:= TfrPhonesPnl(TCheckBox(Sender).Parent)
-      else Exit;
+        then ParentCtrl:= TfrPhonesPnl(TCheckBox(Sender).Parent)
+        else Exit;
 
   { #todo : Реализовать подбор маски edtRegionCode в зависимости от выбранной страны }
 end;
@@ -345,6 +393,31 @@ begin
   Self.ModalResult:= mrOK;
 end;
 
+procedure TfrmPhonesEdit.ActSelectCountryCodeExecute(Sender: TObject);
+var
+  FrmCountry: TfrmSelectCountry;
+begin
+  if not IsPhoneBaseConn then Exit;
+  FrmCountry:= TfrmSelectCountry.Create(Self);
+  try
+    with FrmCountry do
+    begin
+      Left:= Mouse.CursorPos.X + 10;
+      Top:= Mouse.CursorPos.Y + 10;
+      qrySelCountry:= qryPhone;
+      IDCountry:= IDPhoneCountry;
+      ShowModal;
+    end;
+  finally
+    FreeAndNil(FrmCountry);
+  end;
+end;
+
+procedure TfrmPhonesEdit.ActSelectRegionCodeExecute(Sender: TObject);
+begin
+//
+end;
+
 procedure TfrmPhonesEdit.ActShowHidePnlObjListBtnsExecute(Sender: TObject);
 var
   i: PtrInt = -1;
@@ -375,6 +448,41 @@ begin
     Self.EndFormUpdate;
   end;
 
+end;
+
+procedure TfrmPhonesEdit.ActUIRefreshExecute(Sender: TObject);
+var
+  i: PtrInt = -1;
+begin
+  btnPhoneBaseConn.Enabled:= not IsPhoneBaseConn;
+
+  if (PnlObjList.Count > 0) then
+    for i:= 0 to Pred(PnlObjList.Count) do
+    begin
+      PnlObjList.Items[i].btnSelectCountryCode.Enabled:= IsPhoneBaseConn;
+      PnlObjList.Items[i].btnSelectRegionCode.Enabled:= IsPhoneBaseConn;
+    end;
+end;
+
+procedure TfrmPhonesEdit.btnPhoneBaseConnClick(Sender: TObject);
+begin
+  //времянка для отладки
+  FPhoneBase:= IBDatabase1;
+  FPhoneTrans:= IBTransaction1;
+
+  if not Assigned(PhoneBase) or not Assigned(PhoneTrans) then Exit;
+  if FPhoneBase.Connected then Exit;
+
+  try
+    FPhoneBase.Connected:= True;
+
+  except
+    on E: Exception do
+    ShowMessage(e.Message);
+  end;
+
+  IsPhoneBaseConn:= Assigned(FPhoneBase) and FPhoneBase.Connected;
+  ActUIRefreshExecute(Sender);
 end;
 
 procedure TfrmPhonesEdit.FormClose(Sender: TObject; var CloseAction: TCloseAction);

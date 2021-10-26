@@ -1,0 +1,102 @@
+object frmSelectCountry: TfrmSelectCountry
+  Left = 311
+  Height = 297
+  Top = 31
+  Width = 403
+  Caption = 'frmSelectCountry'
+  ClientHeight = 297
+  ClientWidth = 403
+  OnClick = FormClick
+  OnClose = FormClose
+  OnCreate = FormCreate
+  object edtFilter: TEdit
+    AnchorSideLeft.Control = lblFilter
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = Owner
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 103
+    Height = 23
+    Top = 10
+    Width = 290
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Around = 10
+    TabOrder = 0
+    Text = 'edtFilter'
+  end
+  object btnRight: TButton
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 318
+    Height = 25
+    Top = 262
+    Width = 75
+    Anchors = [akRight, akBottom]
+    BorderSpacing.Around = 10
+    Caption = 'btnRight'
+    TabOrder = 1
+  end
+  object btnLeft: TButton
+    AnchorSideRight.Control = btnRight
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 233
+    Height = 25
+    Top = 262
+    Width = 75
+    Anchors = [akRight, akBottom]
+    BorderSpacing.Around = 10
+    Caption = 'btnLeft'
+    TabOrder = 2
+  end
+  object lblFilter: TLabel
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = edtFilter
+    AnchorSideTop.Side = asrCenter
+    Left = 10
+    Height = 15
+    Top = 14
+    Width = 83
+    BorderSpacing.Around = 10
+    Caption = 'Фильтр поиска'
+  end
+  object DBGrid1: TDBGrid
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = edtFilter
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = btnLeft
+    Left = 10
+    Height = 209
+    Top = 43
+    Width = 383
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    BorderSpacing.Around = 10
+    Color = clWindow
+    Columns = <    
+      item
+        Title.Caption = 'Title'
+      end    
+      item
+        Title.Caption = 'Title'
+      end>
+    TabOrder = 3
+  end
+  object actlistSelectCountry: TActionList
+    Left = 136
+    Top = 160
+    object ActBtnSelect: TAction
+      Category = 'app'
+      Caption = 'ActBtnSelect'
+      OnExecute = ActBtnSelectExecute
+    end
+    object ActBtnCancel: TAction
+      Category = 'app'
+      Caption = 'ActBtnCancel'
+      OnExecute = ActBtnCancelExecute
+    end
+  end
+end

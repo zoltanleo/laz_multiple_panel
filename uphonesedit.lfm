@@ -60,9 +60,23 @@ object frmPhonesEdit: TfrmPhonesEdit
     ParentBackground = True
     TabOrder = 2
   end
+  object btnPhoneBaseConn: TButton
+    AnchorSideLeft.Control = Owner
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 10
+    Height = 25
+    Top = 309
+    Width = 134
+    Anchors = [akLeft, akBottom]
+    BorderSpacing.Around = 10
+    Caption = 'Подключить справочник телефонов'
+    OnClick = btnPhoneBaseConnClick
+    TabOrder = 3
+  end
   object actlistPhonesEdit: TActionList
-    Left = 232
-    Top = 184
+    Left = 448
+    Top = 72
     object ActPnlAdd: TAction
       Category = 'panels'
       Caption = 'ActPnlAdd'
@@ -102,5 +116,59 @@ object frmPhonesEdit: TfrmPhonesEdit
       Caption = 'ActShowHidePnlObjListBtns'
       OnExecute = ActShowHidePnlObjListBtnsExecute
     end
+    object ActUIRefresh: TAction
+      Category = 'app'
+      Caption = 'ActUIRefresh'
+      OnExecute = ActUIRefreshExecute
+    end
+    object ActSelectRegionCode: TAction
+      Category = 'panels'
+      Caption = 'ActSelectRegionCode'
+      OnExecute = ActSelectRegionCodeExecute
+    end
+    object ActSelectCountryCode: TAction
+      Category = 'panels'
+      Caption = 'ActSelectCountryCode'
+      OnExecute = ActSelectCountryCodeExecute
+    end
+  end
+  object IBTransaction1: TIBTransaction
+    Active = False
+    Params.Strings = (
+      'read'
+      'read_committed'
+      'rec_version'
+      'nowait'
+    )
+    Left = 120
+    Top = 24
+  end
+  object IBDatabase1: TIBDatabase
+    Connected = False
+    LoginPrompt = False
+    AllowStreamedConnected = False
+    DatabaseName = 'localhost/30764:D:\Archive\code_source\leybasoft_arm_v5\dbase\PHONES.FDB'
+    Params.Strings = (
+      'lc_ctype=UTF8'
+      'user_name=SYSDBA'
+      'password=cooladmin'
+    )
+    LibraryName = 'D:\Portable_program\Firebird_server\Firebird_3_0_7_x64\fbclient.dll'
+    DefaultTransaction = IBTransaction1
+    IdleTimer = 0
+    TraceFlags = []
+    Left = 40
+    Top = 24
+  end
+  object qryPhone: TIBQuery
+    AutoStartTransaction = True
+    AutoCommit = True
+    AutoTrim = True
+    BufferChunks = 1000
+    CachedUpdates = False
+    GeneratorField.ApplyOnEvent = gaeOnNewRecord
+    Params = <>
+    Left = 352
+    Top = 72
   end
 end
