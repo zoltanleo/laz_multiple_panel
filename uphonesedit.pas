@@ -6,8 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  ActnList, LCLType, LazUTF8, uphonespanelframe, IBDatabase,
-  Generics.Collections;
+  ActnList, LCLType, LazUTF8, uphonespanelframe, uselectcountrycode, IBDatabase,
+  IBQuery, Generics.Collections;
 
 type
   //режим вызова модального окна: добавление/редактирование записи
@@ -21,6 +21,8 @@ type
     ActChbMainContactsStateChg: TAction;
     ActChbMainContactCheck: TAction;
     ActChbMobileStateChg: TAction;
+    ActSelectCountryCode: TAction;
+    ActSelectRegionCode: TAction;
     ActUIRefresh: TAction;
     ActShowHidePnlObjListBtns: TAction;
     ActPnlAdd: TAction;
@@ -32,6 +34,7 @@ type
     btnLeft: TButton;
     btnPhoneBaseConn: TButton;
     IBDatabase1: TIBDatabase;
+    qryPhone: TIBQuery;
     IBTransaction1: TIBTransaction;
     scrboxPhonesPnl: TScrollBox;
     procedure ActChbMainContactCheckExecute(Sender: TObject);
@@ -41,6 +44,8 @@ type
     procedure ActPnlRemoveExecute(Sender: TObject);
     procedure ActbtnCancelExecute(Sender: TObject);
     procedure ActbtnOKExecute(Sender: TObject);
+    procedure ActSelectCountryCodeExecute(Sender: TObject);
+    procedure ActSelectRegionCodeExecute(Sender: TObject);
     procedure ActShowHidePnlObjListBtnsExecute(Sender: TObject);
     procedure ActUIRefreshExecute(Sender: TObject);
     procedure btnPhoneBaseConnClick(Sender: TObject);
@@ -48,8 +53,9 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
   private
-    FCountryCode: PtrInt;//поле, содержащее ID кода выбранной страны (по умолчанию -1)
     FFrmEditMode: TEditMode;
+    FIDPhoneCountry: PtrInt;//ID последней выбранной страны (default -1)
+    FIDPhoneRegion: PtrInt;//ID последнего выбранного региона (default -1)
     FIsPhoneBaseConn: Boolean;//флаг, подключена ли форма к phones.fdb
     FMaxPnlCount: PtrInt;//макс.количество панелей на форме для добавления телефонов
     FPhoneBase: TIBDataBase;//ссылка на наследник TIBDataBase, передаваемый в форму
@@ -64,7 +70,8 @@ type
     property IsPhoneBaseConn: Boolean read FIsPhoneBaseConn write FIsPhoneBaseConn;
     property PhoneBase: TIBDataBase read FPhoneBase write FPhoneBase;
     property PhoneTrans: TIBTransaction read FPhoneTrans write FPhoneTrans;
-    property CountryCode: PtrInt read FCountryCode;
+    property IDPhoneCountry: PtrInt read FIDPhoneCountry write FIDPhoneCountry;
+    property IDPhoneRegion: PtrInt read FIDPhoneRegion write FIDPhoneRegion;
     procedure TempAct(Sender: TObject);
   end;
 
@@ -90,7 +97,14 @@ begin
   FIsPhoneBaseConn:= False;//по умолчанию
   FPhoneBase:= nil;//инициируем
   FPhoneTrans:= nil;//инициируем
-  FCountryCode:= -1;
+  FIDPhoneCountry:= -1;
+  FIDPhoneRegion:= -1;
+
+  with qryPhone do
+  begin
+    Database:= PhoneBase;
+    Transaction:= PhoneTrans;
+  end;
 
   PnlObjList:= TPnlObjList.Create(True);
 
@@ -143,6 +157,7 @@ end;
 procedure TfrmPhonesEdit.FormShow(Sender: TObject);
 begin
   ActPnlAddExecute(Sender);
+  btnPhoneBaseConnClick(Sender);
 end;
 
 procedure TfrmPhonesEdit.SetPnlObjList(AValue: TPnlObjList);
@@ -184,8 +199,11 @@ begin
         AnchorSideLeft.Side:= asrLeft;
         AnchorSideRight.Side:= asrRight;
         chbMainContact.Checked:= (frIndex = 0);//чекаем только на верхней панели
+        CountryCode:= -1;
         chbMainContact.OnChange:= @ActChbMainContactCheckExecute;
         chbMobile.OnChange:= @ActChbMobileStateChgExecute;
+        btnSelectCountryCode.OnClick:= @ActSelectCountryCodeExecute;
+        btnSelectRegionCode.OnClick:= @ActSelectRegionCodeExecute;
         frPhonesPnl.OnDblClick:= @TempAct;
 
         if (frIndex = 0) //первый элемент списка (т.е. самый верхний фрэйм на форме)
@@ -375,6 +393,31 @@ begin
   Self.ModalResult:= mrOK;
 end;
 
+procedure TfrmPhonesEdit.ActSelectCountryCodeExecute(Sender: TObject);
+var
+  FrmCountry: TfrmSelectCountry;
+begin
+  if not IsPhoneBaseConn then Exit;
+  FrmCountry:= TfrmSelectCountry.Create(Self);
+  try
+    with FrmCountry do
+    begin
+      Left:= Mouse.CursorPos.X + 10;
+      Top:= Mouse.CursorPos.Y + 10;
+      qrySelCountry:= qryPhone;
+      IDCountry:= IDPhoneCountry;
+      ShowModal;
+    end;
+  finally
+    FreeAndNil(FrmCountry);
+  end;
+end;
+
+procedure TfrmPhonesEdit.ActSelectRegionCodeExecute(Sender: TObject);
+begin
+//
+end;
+
 procedure TfrmPhonesEdit.ActShowHidePnlObjListBtnsExecute(Sender: TObject);
 var
   i: PtrInt = -1;
@@ -428,8 +471,6 @@ begin
   FPhoneTrans:= IBTransaction1;
 
   if not Assigned(PhoneBase) or not Assigned(PhoneTrans) then Exit;
-
-
   if FPhoneBase.Connected then Exit;
 
   try

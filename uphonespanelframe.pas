@@ -28,9 +28,9 @@ type
     memoNote: TMemo;
     procedure edtCountryCodeKeyPress(Sender: TObject; var Key: char);
   private
-
+    FCountryCode: PtrInt;//поле, содержащее ID кода выбранной страны (по умолчанию -1)
   public
-
+    property CountryCode: PtrInt read FCountryCode write FCountryCode;
   end;
 
 implementation

@@ -75,8 +75,8 @@ object frmPhonesEdit: TfrmPhonesEdit
     TabOrder = 3
   end
   object actlistPhonesEdit: TActionList
-    Left = 232
-    Top = 184
+    Left = 448
+    Top = 72
     object ActPnlAdd: TAction
       Category = 'panels'
       Caption = 'ActPnlAdd'
@@ -121,6 +121,16 @@ object frmPhonesEdit: TfrmPhonesEdit
       Caption = 'ActUIRefresh'
       OnExecute = ActUIRefreshExecute
     end
+    object ActSelectRegionCode: TAction
+      Category = 'panels'
+      Caption = 'ActSelectRegionCode'
+      OnExecute = ActSelectRegionCodeExecute
+    end
+    object ActSelectCountryCode: TAction
+      Category = 'panels'
+      Caption = 'ActSelectCountryCode'
+      OnExecute = ActSelectCountryCodeExecute
+    end
   end
   object IBTransaction1: TIBTransaction
     Active = False
@@ -130,8 +140,8 @@ object frmPhonesEdit: TfrmPhonesEdit
       'rec_version'
       'nowait'
     )
-    Left = 184
-    Top = 83
+    Left = 120
+    Top = 24
   end
   object IBDatabase1: TIBDatabase
     Connected = False
@@ -147,7 +157,18 @@ object frmPhonesEdit: TfrmPhonesEdit
     DefaultTransaction = IBTransaction1
     IdleTimer = 0
     TraceFlags = []
-    Left = 71
-    Top = 83
+    Left = 40
+    Top = 24
+  end
+  object qryPhone: TIBQuery
+    AutoStartTransaction = True
+    AutoCommit = True
+    AutoTrim = True
+    BufferChunks = 1000
+    CachedUpdates = False
+    GeneratorField.ApplyOnEvent = gaeOnNewRecord
+    Params = <>
+    Left = 352
+    Top = 72
   end
 end
