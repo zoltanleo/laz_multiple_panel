@@ -6,8 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  ActnList, LCLType, LazUTF8, uphonespanelframe, uselectcountrycode, IBDatabase,
-  IBQuery, Generics.Collections;
+  ActnList, LCLType, LazUTF8, uphonespanelframe, uselectcountrycode,
+  uselectregioncode, IBDatabase, IBQuery, Generics.Collections;
 
 type
   //режим вызова модального окна: добавление/редактирование записи
@@ -21,6 +21,8 @@ type
     ActChbMainContactsStateChg: TAction;
     ActChbMainContactCheck: TAction;
     ActChbMobileStateChg: TAction;
+    ActEdtChange: TAction;
+    ActEdtEditingDone: TAction;
     ActSelectCountryCode: TAction;
     ActSelectRegionCode: TAction;
     ActUIRefresh: TAction;
@@ -34,12 +36,15 @@ type
     btnLeft: TButton;
     btnPhoneBaseConn: TButton;
     IBDatabase1: TIBDatabase;
-    qryPhone: TIBQuery;
+    qryCodeRef: TIBQuery;
     IBTransaction1: TIBTransaction;
     scrboxPhonesPnl: TScrollBox;
     procedure ActChbMainContactCheckExecute(Sender: TObject);
     procedure ActChbMainContactsStateChgExecute(Sender: TObject);
     procedure ActChbMobileStateChgExecute(Sender: TObject);
+    procedure ActCheckCountryExistsExecute(Sender: TObject);
+    procedure ActEdtChangeExecute(Sender: TObject);
+    procedure ActEdtEditingDoneExecute(Sender: TObject);
     procedure ActPnlAddExecute(Sender: TObject);
     procedure ActPnlRemoveExecute(Sender: TObject);
     procedure ActbtnCancelExecute(Sender: TObject);
@@ -54,7 +59,7 @@ type
     procedure FormShow(Sender: TObject);
   private
     FFrmEditMode: TEditMode;
-    FIDPhoneCountry: PtrInt;//ID последней выбранной страны (default -1)
+    //FIDPhoneCountry: PtrInt;//ID последней выбранной страны (default -1)
     FIDPhoneRegion: PtrInt;//ID последнего выбранного региона (default -1)
     FIsPhoneBaseConn: Boolean;//флаг, подключена ли форма к phones.fdb
     FMaxPnlCount: PtrInt;//макс.количество панелей на форме для добавления телефонов
@@ -62,6 +67,10 @@ type
     FPhoneTrans: TIBTransaction;//ссылка на наследник TIBTransaction, передаваемый в форму
     FPnlObjList: TPnlObjList;
     FPnlTagCounter: PtrInt;//счетчик тэгов для новых панелей (для внутренних нужд)
+    //позволяет получать кол-во записей, соответствующих коду в edtCountryCode
+    function GetCountryCount(aParam: PtrInt): Boolean;
+    //позволяет получать кол-во записей, соответствующих коду в edtRegionCode
+    function GetRegionCount(aCountryCode, IsMobile: PtrInt): Boolean;
     procedure SetPnlObjList(AValue: TPnlObjList);
   public
     property MaxPnlCount: PtrInt read FMaxPnlCount;//макс.кол-во панелей (из настроек)
@@ -70,7 +79,7 @@ type
     property IsPhoneBaseConn: Boolean read FIsPhoneBaseConn write FIsPhoneBaseConn;
     property PhoneBase: TIBDataBase read FPhoneBase write FPhoneBase;
     property PhoneTrans: TIBTransaction read FPhoneTrans write FPhoneTrans;
-    property IDPhoneCountry: PtrInt read FIDPhoneCountry write FIDPhoneCountry;
+    //property IDPhoneCountry: PtrInt read FIDPhoneCountry write FIDPhoneCountry;
     property IDPhoneRegion: PtrInt read FIDPhoneRegion write FIDPhoneRegion;
     procedure TempAct(Sender: TObject);
   end;
@@ -97,14 +106,8 @@ begin
   FIsPhoneBaseConn:= False;//по умолчанию
   FPhoneBase:= nil;//инициируем
   FPhoneTrans:= nil;//инициируем
-  FIDPhoneCountry:= -1;
   FIDPhoneRegion:= -1;
 
-  with qryPhone do
-  begin
-    Database:= PhoneBase;
-    Transaction:= PhoneTrans;
-  end;
 
   PnlObjList:= TPnlObjList.Create(True);
 
@@ -157,7 +160,63 @@ end;
 procedure TfrmPhonesEdit.FormShow(Sender: TObject);
 begin
   ActPnlAddExecute(Sender);
+  if (PnlObjList.Count > 0) then
+    ActChbMobileStateChgExecute(PnlObjList.First);
   btnPhoneBaseConnClick(Sender);
+end;
+
+function TfrmPhonesEdit.GetCountryCount(aParam: PtrInt): Boolean;
+begin
+  Result:= False;
+  try
+    with qryCodeRef do
+    begin
+      if Active then Active:= False;
+      SQL.Text:= 'SELECT COUNT (ID) AS CNT ' +
+                  'FROM TBL_COUNTRY ' +
+                  'WHERE (CODE = :prmCNT) AND (ID > 0)';
+      Prepare;
+      ParamByName('prmCNT').Value:= aParam;
+      Active:= True;
+      Result:= (FN('CNT').Value > 0);
+    end;
+  except
+    on E:Exception do
+    begin
+      ShowMessage(E.Message);
+      qryCodeRef.Active:= False;
+      Exit;
+    end;
+  end;
+end;
+
+function TfrmPhonesEdit.GetRegionCount(aCountryCode, IsMobile: PtrInt): Boolean;
+begin
+  Result:= False;
+  try
+    with qryCodeRef do
+    begin
+      if Active then Active:= False;
+      SQL.Text:= 'SELECT COUNT(L.CODE) AS CNT ' +
+                 'FROM TBL_DEPARTMENT D '+
+                 'INNER JOIN TBL_LOCATION L ON (D.ID = L.FK_DEPART) ' +
+                 'WHERE (D.ID > 0) ' +
+                  'AND (D.MOBILE_OPERATOR = :prmMobile) ' +
+                  'AND (D.FK_COUNTRY = :prmCountry)';
+      Prepare;
+      ParamByName('prmMobile').Value:= IsMobile;
+      ParamByName('prmCountry').Value:= aCountryCode;
+      Active:= True;
+      Result:= (FN('CNT').Value > 0);
+    end;
+  except
+    on E:Exception do
+    begin
+      ShowMessage(E.Message);
+      qryCodeRef.Active:= False;
+      Exit;
+    end;
+  end;
 end;
 
 procedure TfrmPhonesEdit.SetPnlObjList(AValue: TPnlObjList);
@@ -200,10 +259,13 @@ begin
         AnchorSideRight.Side:= asrRight;
         chbMainContact.Checked:= (frIndex = 0);//чекаем только на верхней панели
         CountryCode:= -1;
+        RegionCode:= -1;
         chbMainContact.OnChange:= @ActChbMainContactCheckExecute;
         chbMobile.OnChange:= @ActChbMobileStateChgExecute;
         btnSelectCountryCode.OnClick:= @ActSelectCountryCodeExecute;
         btnSelectRegionCode.OnClick:= @ActSelectRegionCodeExecute;
+        edtCountryCode.OnEditingDone:=@ActEdtEditingDoneExecute;
+        edtRegionCode.OnEditingDone:=@ActEdtEditingDoneExecute;
         frPhonesPnl.OnDblClick:= @TempAct;
 
         if (frIndex = 0) //первый элемент списка (т.е. самый верхний фрэйм на форме)
@@ -236,6 +298,14 @@ begin
             {$ENDIF}
           end;
 
+        for i:= 0 to Pred(ControlCount) do
+          if TObject(Controls[i]).InheritsFrom(TEdit) then
+          begin
+            TEdit(Controls[i]).ShowHint:= True;
+            TEdit(Controls[i]).Hint:= '';
+            TEdit(Controls[i]).OnChange:= @ActEdtChangeExecute;
+          end;
+
         {$IFDEF MSWINDOWS}
           btnPnlLeft.Caption:= '+';
           btnPnlRight.Caption:= '-';
@@ -260,7 +330,7 @@ begin
 
         if edtCountryCode.CanSetFocus then edtCountryCode.SetFocus;
         ActUIRefreshExecute(Sender);//обновляем UI  соответственно настройкам и флагам
-      end;
+      end;{with frPhonesPnl do}
     except
       on E:Exception do
       begin
@@ -298,7 +368,120 @@ begin
         then ParentCtrl:= TfrPhonesPnl(TCheckBox(Sender).Parent)
         else Exit;
 
+  //для мобильных код оператора - 3 цифры
+  if ParentCtrl.chbMobile.Checked
+  then
+    begin
+      ParentCtrl.edtRegionCode.Clear;
+      ParentCtrl.edtRegionCode.MaxLength:= 3;
+    end
+  else
+      ParentCtrl.edtRegionCode.MaxLength:= 0;
+
   { #todo : Реализовать подбор маски edtRegionCode в зависимости от выбранной страны }
+end;
+
+procedure TfrmPhonesEdit.ActCheckCountryExistsExecute(Sender: TObject);
+begin
+//
+end;
+
+procedure TfrmPhonesEdit.ActEdtChangeExecute(Sender: TObject);
+begin
+  if not TObject(Sender).InheritsFrom(TEdit) then Exit;
+  if (UTF8Trim(TEdit(Sender).Hint) <> '') then TEdit(Sender).Hint:= '';
+
+  //если меняем edtRegionCode
+  if TEdit(Sender).Equals(TfrPhonesPnl(TEdit(Sender).Parent).edtRegionCode) then
+    if IsPhoneBaseConn then //подключены к БД телефонных кодов
+      if (UTF8Trim(TfrPhonesPnl(TEdit(Sender).Parent).edtCountryCode.Text) = '') then
+        if Application.MessageBox(PChar('Вы не указали код страны. Хотите это сделать сейчас?'),
+                                  PChar('Недостаточно данных'),
+                                  MB_ICONINFORMATION + MB_YESNO) = IDYES
+        then
+          begin
+            scrboxPhonesPnl.ScrollInView(TfrPhonesPnl(TEdit(Sender).Parent).edtCountryCode);
+            if TfrPhonesPnl(TEdit(Sender).Parent).edtCountryCode.CanSetFocus then
+                                TfrPhonesPnl(TEdit(Sender).Parent).edtCountryCode.SetFocus;
+            Exit;
+          end
+end;
+
+procedure TfrmPhonesEdit.ActEdtEditingDoneExecute(Sender: TObject);
+var
+  i: Longint;
+begin
+  if not TObject(Sender).InheritsFrom(TEdit) then Exit;
+
+  //edtCountryCode
+  if TEdit(Sender).Equals(TfrPhonesPnl(TEdit(Sender).Parent).edtCountryCode) then
+  begin
+    if not IsPhoneBaseConn then Exit;
+    if (UTF8Trim(TEdit(Sender).Text) = '') then Exit;
+
+    if not TryStrToInt(UTF8Trim(TEdit(Sender).Text),i) then
+    begin
+      Application.MessageBox(PChar('Введенное значение не является числом'),
+                            PChar('Некорректные данные'),
+                            MB_ICONINFORMATION);
+      scrboxPhonesPnl.ScrollInView(TEdit(Sender));
+      if TEdit(Sender).CanSetFocus then  TEdit(Sender).SetFocus;
+      Exit;
+    end;
+
+    if not GetCountryCount(StrToInt(UTF8Trim(TEdit(Sender).Text)))
+    then
+      begin
+        if Application.MessageBox(PChar('Введенный код не соответствует ни одной стране мира. Хотите ' +
+                                        'воспользоваться справочником для выбора корректного значения?'),
+                                  PChar('Некорректные данные'),
+                                  MB_ICONINFORMATION + MB_YESNO) = IDYES
+        then
+          ActSelectCountryCodeExecute(TfrPhonesPnl(TEdit(Sender).Parent))
+        else
+          //сбрасываем проперть, чтобы при выборе кода региона сначала была задан код страны
+          TfrPhonesPnl(TEdit(Sender).Parent).CountryCode:= -1;
+      end
+    else
+      TfrPhonesPnl(TEdit(Sender).Parent).CountryCode:= StrToInt(UTF8Trim(TEdit(Sender).Text));
+
+  end;{edtCountryCode}
+
+  //edtRegionCode
+  if TEdit(Sender).Equals(TfrPhonesPnl(TEdit(Sender).Parent).edtRegionCode) then
+  begin
+    if not IsPhoneBaseConn then Exit;
+    if (UTF8Trim(TEdit(Sender).Text) = '') then Exit;
+
+    if not TryStrToInt(UTF8Trim(TEdit(Sender).Text),i) then
+    begin
+      Application.MessageBox(PChar('Введенное значение не является числом'),
+                            PChar('Некорректные данные'),
+                            MB_ICONINFORMATION);
+      scrboxPhonesPnl.ScrollInView(TEdit(Sender));
+      if TEdit(Sender).CanSetFocus then  TEdit(Sender).SetFocus;
+      Exit;
+    end;
+
+    if not GetRegionCount(StrToInt(UTF8Trim(TfrPhonesPnl(TEdit(Sender).Parent).edtCountryCode.Text)),
+                          PtrInt(TfrPhonesPnl(TEdit(Sender).Parent).chbMobile))
+    then
+      begin
+        if Application.MessageBox(PChar('Введенный код не соответствует ни одной стране мира. Хотите ' +
+                                        'воспользоваться справочником для выбора корректного значения?'),
+                                  PChar('Некорректные данные'),
+                                  MB_ICONINFORMATION + MB_YESNO) = IDYES
+        then
+          ActSelectRegionCodeExecute(TfrPhonesPnl(TEdit(Sender).Parent))
+        else
+          //сбрасываем проперть, чтобы при выборе кода региона сначала была задан код страны
+          TfrPhonesPnl(TEdit(Sender).Parent).RegionCode:= -1;
+      end
+    else
+      TfrPhonesPnl(TEdit(Sender).Parent).RegionCode:= StrToInt(UTF8Trim(TEdit(Sender).Text));
+
+
+  end;{edtRegionCode}
 end;
 
 procedure TfrmPhonesEdit.ActChbMainContactCheckExecute(Sender: TObject);
@@ -396,17 +579,39 @@ end;
 procedure TfrmPhonesEdit.ActSelectCountryCodeExecute(Sender: TObject);
 var
   FrmCountry: TfrmSelectCountry;
+  SenderPrt: TfrPhonesPnl = Nil;
 begin
   if not IsPhoneBaseConn then Exit;
+
+  if TObject(Sender).InheritsFrom(TfrPhonesPnl)
+  then SenderPrt:= TfrPhonesPnl(Sender)
+  else
+    begin
+      if TObject(Sender).InheritsFrom(TButton)
+      then SenderPrt:= TfrPhonesPnl(TButton(Sender).Parent)
+      else Exit;
+    end;
+
+  scrboxPhonesPnl.ScrollInView(SenderPrt.btnSelectCountryCode);
   FrmCountry:= TfrmSelectCountry.Create(Self);
   try
     with FrmCountry do
     begin
-      Left:= Mouse.CursorPos.X + 10;
-      Top:= Mouse.CursorPos.Y + 10;
-      qrySelCountry:= qryPhone;
-      IDCountry:= IDPhoneCountry;
+      Position:= poOwnerFormCenter;
+      IDCountry:=SenderPrt.CountryCode;
       ShowModal;
+      if (ModalResult = mrOK) then
+      begin
+        if (SenderPrt.CountryCode <> IDCountry) then
+        begin
+          SenderPrt.CountryCode:= IDCountry;
+          if Assigned(SenderPrt) then
+          begin
+            SenderPrt.edtCountryCode.Text:= qryContryCod.FN('CODE').Value;
+            SenderPrt.edtCountryCode.Hint:= qryContryCode.FN('NAME').Value;
+          end;
+        end;
+      end;
     end;
   finally
     FreeAndNil(FrmCountry);
@@ -414,8 +619,57 @@ begin
 end;
 
 procedure TfrmPhonesEdit.ActSelectRegionCodeExecute(Sender: TObject);
+var
+  frmRegion: TfrmSelectRegion = nil;
+  SenderPrt: TfrPhonesPnl = Nil;
 begin
-//
+  if not IsPhoneBaseConn then Exit;
+  with qryCodeRef do
+  begin
+    if Active then Active:= False;
+
+  end;
+
+  //if (IDPhoneCountry = -1) then
+  //begin
+  //  Application.MessageBox(PChar(''));
+  //end;
+
+  if TObject(Sender).InheritsFrom(TfrPhonesPnl)
+  then SenderPrt:= TfrPhonesPnl(Sender)
+  else
+    begin
+      if TObject(Sender).InheritsFrom(TButton)
+      then SenderPrt:= TfrPhonesPnl(TButton(Sender).Parent)
+      else Exit;
+    end;
+
+  scrboxPhonesPnl.ScrollInView(SenderPrt.btnSelectRegionCode);
+
+  frmRegion:= TfrmSelectRegion.Create(Self);
+  try
+    with frmRegion do
+    begin
+      Position:= poOwnerFormCenter;
+      IDCountry:= SenderPrt.CountryCode;
+      IDRegion:= SenderPrt.RegionCode;
+      ShowModal;
+      //if (ModalResult = mrOK) then
+      //begin
+      //  if (IDPhoneCountry <> IDCountry) then
+      //  begin
+      //    IDPhoneCountry:= IDCountry;
+      //    if Assigned(prt) then
+      //    begin
+      //      prt.edtCountryCode.Text:= qryCodeRef.FN('CODE').Value;
+      //      prt.edtCountryCode.Hint:= qryCodeRef.FN('NAME').Value;
+      //    end;
+      //  end;
+      //end;
+    end;
+  finally
+    FreeAndNil(frmRegion);
+  end;
 end;
 
 procedure TfrmPhonesEdit.ActShowHidePnlObjListBtnsExecute(Sender: TObject);
@@ -475,7 +729,6 @@ begin
 
   try
     FPhoneBase.Connected:= True;
-
   except
     on E: Exception do
     ShowMessage(e.Message);

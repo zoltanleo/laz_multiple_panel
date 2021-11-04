@@ -75,8 +75,8 @@ object frmPhonesEdit: TfrmPhonesEdit
     TabOrder = 3
   end
   object actlistPhonesEdit: TActionList
-    Left = 448
-    Top = 72
+    Left = 440
+    Top = 40
     object ActPnlAdd: TAction
       Category = 'panels'
       Caption = 'ActPnlAdd'
@@ -131,9 +131,20 @@ object frmPhonesEdit: TfrmPhonesEdit
       Caption = 'ActSelectCountryCode'
       OnExecute = ActSelectCountryCodeExecute
     end
+    object ActEdtChange: TAction
+      Category = 'panels'
+      Caption = 'ActEdtChange'
+      OnExecute = ActEdtChangeExecute
+    end
+    object ActEdtEditingDone: TAction
+      Category = 'panels'
+      Caption = 'ActEdtEditingDone'
+      OnExecute = ActEdtEditingDoneExecute
+    end
   end
   object IBTransaction1: TIBTransaction
     Active = False
+    DefaultDatabase = IBDatabase1
     Params.Strings = (
       'read'
       'read_committed'
@@ -160,7 +171,9 @@ object frmPhonesEdit: TfrmPhonesEdit
     Left = 40
     Top = 24
   end
-  object qryPhone: TIBQuery
+  object qryCodeRef: TIBQuery
+    Database = IBDatabase1
+    Transaction = IBTransaction1
     AutoStartTransaction = True
     AutoCommit = True
     AutoTrim = True
@@ -168,7 +181,7 @@ object frmPhonesEdit: TfrmPhonesEdit
     CachedUpdates = False
     GeneratorField.ApplyOnEvent = gaeOnNewRecord
     Params = <>
-    Left = 352
-    Top = 72
+    Left = 216
+    Top = 32
   end
 end

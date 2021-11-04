@@ -5,7 +5,7 @@ unit uphonespanelframe;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, StdCtrls, ExtCtrls, LazUTF8;
+  Classes, SysUtils, Forms, Controls, StdCtrls, ExtCtrls, IBQuery, LazUTF8;
 
 type
 
@@ -29,8 +29,10 @@ type
     procedure edtCountryCodeKeyPress(Sender: TObject; var Key: char);
   private
     FCountryCode: PtrInt;//поле, содержащее ID кода выбранной страны (по умолчанию -1)
+    FRegionCode: PtrInt;//поле, содержащее ID кода выбранного региона страны/ОпСоСа (по умолчанию -1)
   public
     property CountryCode: PtrInt read FCountryCode write FCountryCode;
+    property RegionCode: PtrInt read FRegionCode write FRegionCode;
   end;
 
 implementation

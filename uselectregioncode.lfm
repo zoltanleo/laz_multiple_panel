@@ -1,0 +1,142 @@
+object frmSelectRegion: TfrmSelectRegion
+  Left = 311
+  Height = 300
+  Top = 31
+  Width = 447
+  Caption = 'frmSelectRegion'
+  ClientHeight = 300
+  ClientWidth = 447
+  object chbIsMobile: TCheckBox
+    AnchorSideLeft.Control = cbbRegion
+    AnchorSideTop.Control = Owner
+    Left = 70
+    Height = 19
+    Top = 10
+    Width = 143
+    BorderSpacing.Top = 10
+    Caption = 'Мобильный оператор'
+    OnChange = chbIsMobileChange
+    TabOrder = 5
+  end
+  object edtFilter: TEdit
+    AnchorSideLeft.Control = cbbRegion
+    AnchorSideTop.Control = cbbRegion
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 70
+    Height = 23
+    Top = 72
+    Width = 367
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Top = 10
+    BorderSpacing.Right = 10
+    BorderSpacing.Bottom = 10
+    TabOrder = 0
+    Text = 'edtFilter'
+  end
+  object lblRegion: TLabel
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = cbbRegion
+    AnchorSideTop.Side = asrCenter
+    AnchorSideRight.Control = lblFilter
+    AnchorSideRight.Side = asrBottom
+    Left = 10
+    Height = 15
+    Top = 43
+    Width = 50
+    BorderSpacing.Around = 10
+    Caption = 'lblRegion'
+  end
+  object lblFilter: TLabel
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = edtFilter
+    AnchorSideTop.Side = asrCenter
+    AnchorSideRight.Control = edtFilter
+    Left = 19
+    Height = 15
+    Top = 76
+    Width = 41
+    Alignment = taRightJustify
+    Anchors = [akTop, akRight]
+    BorderSpacing.Around = 10
+    Caption = 'Фильтр'
+  end
+  object cbbRegion: TComboBox
+    AnchorSideLeft.Control = lblRegion
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = chbIsMobile
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 70
+    Height = 23
+    Top = 39
+    Width = 367
+    Anchors = [akTop, akLeft, akRight]
+    BorderSpacing.Around = 10
+    ItemHeight = 15
+    TabOrder = 1
+    Text = 'cbbRegion'
+  end
+  object btnRight: TButton
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 362
+    Height = 25
+    Top = 265
+    Width = 75
+    Anchors = [akRight, akBottom]
+    BorderSpacing.Around = 10
+    Caption = 'btnRight'
+    TabOrder = 2
+  end
+  object btnLeft: TButton
+    AnchorSideRight.Control = btnRight
+    AnchorSideBottom.Control = Owner
+    AnchorSideBottom.Side = asrBottom
+    Left = 277
+    Height = 25
+    Top = 265
+    Width = 75
+    Anchors = [akRight, akBottom]
+    BorderSpacing.Around = 10
+    Caption = 'btnLeft'
+    TabOrder = 3
+  end
+  object grSelectRegion: TDBGrid
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = edtFilter
+    AnchorSideTop.Side = asrBottom
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    AnchorSideBottom.Control = btnRight
+    Left = 10
+    Height = 150
+    Top = 105
+    Width = 427
+    Anchors = [akTop, akLeft, akRight, akBottom]
+    BorderSpacing.Around = 10
+    Color = clWindow
+    Columns = <    
+      item
+        Title.Caption = 'Title'
+      end    
+      item
+        Title.Caption = 'Title'
+      end>
+    DataSource = DSSelectRegion
+    TabOrder = 4
+  end
+  object DSSelectRegion: TDataSource
+    DataSet = frmPhonesEdit.qryCodeRef
+    Left = 67
+    Top = 129
+  end
+  object actlistSelectRegion: TActionList
+    Left = 280
+    Top = 128
+  end
+end

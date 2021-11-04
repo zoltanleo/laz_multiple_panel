@@ -3,24 +3,29 @@ object frmSelectCountry: TfrmSelectCountry
   Height = 297
   Top = 31
   Width = 403
+  BorderIcons = []
   Caption = 'frmSelectCountry'
   ClientHeight = 297
   ClientWidth = 403
+  KeyPreview = True
   OnClick = FormClick
   OnClose = FormClose
   OnCreate = FormCreate
+  OnShow = FormShow
+  ShowHint = True
   object edtFilter: TEdit
     AnchorSideLeft.Control = lblFilter
     AnchorSideLeft.Side = asrBottom
     AnchorSideTop.Control = Owner
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
-    Left = 103
+    Left = 61
     Height = 23
     Top = 10
-    Width = 290
+    Width = 332
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Around = 10
+    OnChange = edtFilterChange
     TabOrder = 0
     Text = 'edtFilter'
   end
@@ -36,7 +41,7 @@ object frmSelectCountry: TfrmSelectCountry
     Anchors = [akRight, akBottom]
     BorderSpacing.Around = 10
     Caption = 'btnRight'
-    TabOrder = 1
+    TabOrder = 2
   end
   object btnLeft: TButton
     AnchorSideRight.Control = btnRight
@@ -49,7 +54,7 @@ object frmSelectCountry: TfrmSelectCountry
     Anchors = [akRight, akBottom]
     BorderSpacing.Around = 10
     Caption = 'btnLeft'
-    TabOrder = 2
+    TabOrder = 3
   end
   object lblFilter: TLabel
     AnchorSideLeft.Control = Owner
@@ -58,11 +63,11 @@ object frmSelectCountry: TfrmSelectCountry
     Left = 10
     Height = 15
     Top = 14
-    Width = 83
+    Width = 41
     BorderSpacing.Around = 10
-    Caption = 'Фильтр поиска'
+    Caption = 'Фильтр'
   end
-  object DBGrid1: TDBGrid
+  object grSelectCountry: TDBGrid
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = edtFilter
     AnchorSideTop.Side = asrBottom
@@ -73,30 +78,69 @@ object frmSelectCountry: TfrmSelectCountry
     Height = 209
     Top = 43
     Width = 383
+    AlternateColor = clMenu
     Anchors = [akTop, akLeft, akRight, akBottom]
+    AutoEdit = False
     BorderSpacing.Around = 10
     Color = clWindow
     Columns = <    
       item
-        Title.Caption = 'Title'
+        Alignment = taCenter
+        Title.Alignment = taCenter
+        Title.Caption = 'Код страны'
+        Width = 78
+        FieldName = 'CODE'
       end    
       item
-        Title.Caption = 'Title'
+        Title.Alignment = taCenter
+        Title.Caption = 'Страна'
+        Width = 54
+        FieldName = 'NAME'
       end>
-    TabOrder = 3
+    DataSource = DSSelectCountry
+    Options = [dgTitles, dgIndicator, dgColLines, dgRowLines, dgRowSelect, dgAlwaysShowSelection, dgAnyButtonCanSelect, dgCellHints, dgTruncCellHints, dgCellEllipsis]
+    ReadOnly = True
+    ShowHint = True
+    TabOrder = 1
+    OnDblClick = ActBtnSelectExecute
   end
   object actlistSelectCountry: TActionList
-    Left = 136
-    Top = 160
+    Left = 184
+    Top = 96
     object ActBtnSelect: TAction
       Category = 'app'
       Caption = 'ActBtnSelect'
       OnExecute = ActBtnSelectExecute
+      ShortCut = 16397
     end
     object ActBtnCancel: TAction
       Category = 'app'
       Caption = 'ActBtnCancel'
       OnExecute = ActBtnCancelExecute
     end
+    object ActQrySelect: TAction
+      Category = 'select'
+      Caption = 'ActQrySelect'
+      OnExecute = ActQrySelectExecute
+    end
+  end
+  object DSSelectCountry: TDataSource
+    AutoEdit = False
+    DataSet = qryContryCode
+    Left = 64
+    Top = 96
+  end
+  object qryContryCode: TIBQuery
+    Database = frmPhonesEdit.IBDatabase1
+    Transaction = frmPhonesEdit.IBTransaction1
+    AutoStartTransaction = True
+    AutoCommit = True
+    AutoTrim = True
+    BufferChunks = 1000
+    CachedUpdates = False
+    GeneratorField.ApplyOnEvent = gaeOnNewRecord
+    Params = <>
+    Left = 288
+    Top = 96
   end
 end
