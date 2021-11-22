@@ -183,7 +183,7 @@ object frPhonesPnl: TfrPhonesPnl
     Left = 303
     Height = 19
     Top = 63
-    Width = 194
+    Width = 192
     BorderSpacing.Top = 10
     Caption = 'Основной контактный телефон'
     Checked = True
@@ -197,7 +197,7 @@ object frPhonesPnl: TfrPhonesPnl
     Left = 303
     Height = 19
     Top = 92
-    Width = 127
+    Width = 125
     BorderSpacing.Top = 10
     Caption = 'Мобильный номер'
     Checked = True

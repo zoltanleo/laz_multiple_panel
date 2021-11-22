@@ -21,8 +21,8 @@
       <UseVersionInfo Value="True"/>
       <AutoIncrementBuild Value="True"/>
       <MinorVersionNr Value="1"/>
-      <RevisionNr Value="5"/>
-      <BuildNr Value="21"/>
+      <RevisionNr Value="6"/>
+      <BuildNr Value="22"/>
       <Attributes pvaDebug="True"/>
     </VersionInfo>
     <BuildModes Count="3" Active="Debug">
@@ -105,25 +105,28 @@
     <RunParams>
       <FormatVersion Value="2"/>
     </RunParams>
-    <RequiredPackages Count="3">
+    <RequiredPackages Count="4">
       <Item1>
-        <PackageName Value="FCL"/>
+        <PackageName Value="MemDSLaz"/>
       </Item1>
       <Item2>
-        <PackageName Value="ibexpress"/>
+        <PackageName Value="FCL"/>
       </Item2>
       <Item3>
-        <PackageName Value="LCL"/>
+        <PackageName Value="ibexpress"/>
       </Item3>
+      <Item4>
+        <PackageName Value="LCL"/>
+      </Item4>
     </RequiredPackages>
-    <Units Count="13">
+    <Units Count="17">
       <Unit0>
         <Filename Value="project1.lpr"/>
         <IsPartOfProject Value="True"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="10"/>
         <CursorPos X="73" Y="13"/>
-        <UsageCount Value="78"/>
+        <UsageCount Value="123"/>
       </Unit0>
       <Unit1>
         <Filename Value="uphonesedit.pas"/>
@@ -131,17 +134,16 @@
         <ComponentName Value="frmPhonesEdit"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <TopLine Value="610"/>
-        <CursorPos X="57" Y="610"/>
-        <UsageCount Value="78"/>
-        <Bookmarks Count="7">
-          <Item0 X="5" Y="386" ID="6"/>
-          <Item1 X="10" Y="165" ID="3"/>
-          <Item2 X="13" Y="218" ID="4"/>
-          <Item3 Y="183" ID="5"/>
-          <Item4 X="8" Y="194" ID="1"/>
-          <Item5 X="28" Y="475" ID="2"/>
-          <Item6 Y="657"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="484"/>
+        <CursorPos X="9" Y="493"/>
+        <FoldState Value=" T3qa0Nn"/>
+        <UsageCount Value="123"/>
+        <Bookmarks Count="4">
+          <Item0 X="13" Y="252" ID="4"/>
+          <Item1 X="7" Y="710"/>
+          <Item2 Y="545" ID="5"/>
+          <Item3 Y="503" ID="2"/>
         </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
@@ -153,9 +155,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="23"/>
-        <CursorPos X="84" Y="32"/>
-        <UsageCount Value="78"/>
+        <TopLine Value="31"/>
+        <CursorPos X="44" Y="49"/>
+        <UsageCount Value="123"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit2>
@@ -167,21 +169,21 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="1513"/>
         <CursorPos X="41" Y="1519"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="6"/>
       </Unit3>
       <Unit4>
         <Filename Value="C:\laz_new\ccr\ibx_rik\runtime\IBDatabase.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="1119"/>
         <CursorPos Y="1126"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="6"/>
       </Unit4>
       <Unit5>
         <Filename Value="uselectcountryframe.pas"/>
         <ComponentName Value="frSelectCountry"/>
         <ResourceBaseClass Value="Frame"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="18"/>
+        <UsageCount Value="16"/>
       </Unit5>
       <Unit6>
         <Filename Value="uselectcountrycode.pas"/>
@@ -190,23 +192,23 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="63"/>
-        <CursorPos X="28" Y="66"/>
-        <UsageCount Value="72"/>
+        <TopLine Value="151"/>
+        <CursorPos X="54" Y="82"/>
+        <UsageCount Value="117"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit6>
       <Unit7>
         <Filename Value="C:\laz_new\ccr\ibx_rik\runtime\IBQuery.pas"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="6"/>
       </Unit7>
       <Unit8>
         <Filename Value="C:\laz_new\ccr\ibx_rik\runtime\IBCustomDataSet.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="2673"/>
         <CursorPos Y="2680"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="6"/>
       </Unit8>
       <Unit9>
         <Filename Value="C:\laz_new\fpcsrc\packages\fcl-db\src\base\db.pas"/>
@@ -214,13 +216,13 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="1491"/>
         <CursorPos X="3" Y="1498"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="6"/>
       </Unit9>
       <Unit10>
         <Filename Value="C:\laz_new\ccr\ibx_rik\runtime\IB.pas"/>
         <EditorIndex Value="-1"/>
-        <TopLine Value="353"/>
-        <CursorPos Y="360"/>
+        <TopLine Value="402"/>
+        <CursorPos Y="408"/>
         <UsageCount Value="8"/>
       </Unit10>
       <Unit11>
@@ -228,7 +230,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="2934"/>
         <CursorPos X="3" Y="2940"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="6"/>
       </Unit11>
       <Unit12>
         <Filename Value="uselectregioncode.pas"/>
@@ -236,14 +238,46 @@
         <ComponentName Value="frmSelectRegion"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
         <EditorIndex Value="1"/>
-        <TopLine Value="23"/>
-        <CursorPos X="40" Y="25"/>
-        <UsageCount Value="45"/>
+        <TopLine Value="110"/>
+        <CursorPos X="34" Y="116"/>
+        <UsageCount Value="90"/>
+        <Bookmarks Count="1">
+          <Item0 X="3" Y="13" ID="1"/>
+        </Bookmarks>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit12>
+      <Unit13>
+        <Filename Value="C:\laz_new\fpcsrc\packages\fcl-db\src\memds\memds.pp"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="133"/>
+        <CursorPos X="3" Y="51"/>
+        <UsageCount Value="8"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="C:\laz_new\lazarus\lcl\include\control.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="3584"/>
+        <CursorPos Y="3591"/>
+        <UsageCount Value="10"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="C:\laz_new\lazarus\lcl\lcltype.pp"/>
+        <UnitName Value="LCLType"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="407"/>
+        <CursorPos X="15" Y="446"/>
+        <UsageCount Value="11"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="C:\laz_new\lazarus\lcl\controls.pp"/>
+        <UnitName Value="Controls"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="4648"/>
+        <CursorPos X="28" Y="4654"/>
+        <UsageCount Value="10"/>
+      </Unit16>
     </Units>
     <Debugger>
       <Backend Value="{B03F610B-0B41-4F4B-816D-5925DEAA0040}"/>
@@ -251,123 +285,123 @@
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="194" Column="12" TopLine="191"/>
+        <Caret Line="242" TopLine="233"/>
       </Position1>
       <Position2>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="465" Column="18" TopLine="465"/>
+        <Caret Line="239" TopLine="233"/>
       </Position2>
       <Position3>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="193" Column="33" TopLine="187"/>
+        <Caret Line="241" TopLine="233"/>
       </Position3>
       <Position4>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="72" Column="127" TopLine="67"/>
+        <Caret Line="242" TopLine="233"/>
       </Position4>
       <Position5>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="423" Column="32" TopLine="418"/>
+        <Caret Line="239" TopLine="233"/>
       </Position5>
       <Position6>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="467" TopLine="425"/>
+        <Caret Line="210" TopLine="203"/>
       </Position6>
       <Position7>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="169" Column="31" TopLine="168"/>
+        <Caret Line="206" TopLine="203"/>
       </Position7>
       <Position8>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="73" Column="14" TopLine="66"/>
+        <Caret Line="254" TopLine="248"/>
       </Position8>
       <Position9>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="196" Column="3" TopLine="192"/>
+        <Caret Line="533" Column="29" TopLine="527"/>
       </Position9>
       <Position10>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="73" Column="14" TopLine="68"/>
+        <Caret Line="534" TopLine="527"/>
       </Position10>
       <Position11>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="196" Column="3" TopLine="192"/>
+        <Caret Line="303" Column="39" TopLine="303"/>
       </Position11>
       <Position12>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="73" Column="14" TopLine="68"/>
+        <Caret Line="513" TopLine="510"/>
       </Position12>
       <Position13>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="467" Column="19" TopLine="461"/>
+        <Caret Line="239" TopLine="231"/>
       </Position13>
       <Position14>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="73" Column="70" TopLine="69"/>
+        <Caret Line="487" Column="29" TopLine="483"/>
       </Position14>
       <Position15>
-        <Filename Value="uphonesedit.pas"/>
-        <Caret Line="196" Column="3" TopLine="192"/>
+        <Filename Value="uselectregioncode.pas"/>
+        <Caret Line="113" Column="16" TopLine="110"/>
       </Position15>
       <Position16>
-        <Filename Value="uphonesedit.pas"/>
-        <Caret Line="83" Column="70" TopLine="71"/>
+        <Filename Value="uselectregioncode.pas"/>
+        <Caret Line="116" Column="34" TopLine="110"/>
       </Position16>
       <Position17>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="196" Column="3" TopLine="193"/>
+        <Caret Line="513" Column="43" TopLine="502"/>
       </Position17>
       <Position18>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="467" Column="26" TopLine="461"/>
+        <Caret Line="658" Column="3" TopLine="652"/>
       </Position18>
       <Position19>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="194" Column="26" TopLine="188"/>
+        <Caret Line="556" TopLine="507"/>
       </Position19>
       <Position20>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="73" Column="15" TopLine="69"/>
+        <Caret Line="438" Column="27" TopLine="422"/>
       </Position20>
       <Position21>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="194" Column="26" TopLine="192"/>
+        <Caret Line="452" TopLine="483"/>
       </Position21>
       <Position22>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="476" Column="28" TopLine="470"/>
+        <Caret Line="439" Column="40" TopLine="431"/>
       </Position22>
       <Position23>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="627" Column="3" TopLine="627"/>
+        <Caret Line="535" Column="20" TopLine="524"/>
       </Position23>
       <Position24>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="482" Column="52" TopLine="437"/>
+        <Caret Line="426" Column="3" TopLine="420"/>
       </Position24>
       <Position25>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="62" Column="23" TopLine="57"/>
+        <Caret Line="455" Column="3" TopLine="497"/>
       </Position25>
       <Position26>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="109" TopLine="104"/>
+        <Caret Line="432" TopLine="429"/>
       </Position26>
       <Position27>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="466" Column="99" TopLine="460"/>
+        <Caret Line="514" Column="75" TopLine="496"/>
       </Position27>
       <Position28>
         <Filename Value="uphonesedit.pas"/>
-        <Caret Line="655" Column="38" TopLine="645"/>
+        <Caret Line="442" Column="35" TopLine="420"/>
       </Position28>
       <Position29>
-        <Filename Value="uselectcountrycode.pas"/>
-        <Caret Line="71" Column="24" TopLine="64"/>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="426" Column="2" TopLine="420"/>
       </Position29>
       <Position30>
-        <Filename Value="uselectcountrycode.pas"/>
-        <Caret Line="72" Column="21" TopLine="22"/>
+        <Filename Value="uphonesedit.pas"/>
+        <Caret Line="424" TopLine="420"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>
@@ -407,4 +441,26 @@
       </Options>
     </Linking>
   </CompilerOptions>
+  <Debugging>
+    <Watches Count="6">
+      <Item1>
+        <Expression Value="Result"/>
+      </Item1>
+      <Item2>
+        <Expression Value="aName"/>
+      </Item2>
+      <Item3>
+        <Expression Value="aID"/>
+      </Item3>
+      <Item4>
+        <Expression Value="i"/>
+      </Item4>
+      <Item5>
+        <Expression Value="tmpCode"/>
+      </Item5>
+      <Item6>
+        <Expression Value="tmpStr"/>
+      </Item6>
+    </Watches>
+  </Debugging>
 </CONFIG>

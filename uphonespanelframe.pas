@@ -5,7 +5,8 @@ unit uphonespanelframe;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, StdCtrls, ExtCtrls, IBQuery, LazUTF8;
+  Classes, SysUtils, Forms, Controls, StdCtrls, ExtCtrls, IBQuery,
+  LazUTF8, LCLType;
 
 type
 
@@ -28,8 +29,10 @@ type
     memoNote: TMemo;
     procedure edtCountryCodeKeyPress(Sender: TObject; var Key: char);
   private
-    FCountryCode: PtrInt;//поле, содержащее ID кода выбранной страны (по умолчанию -1)
-    FRegionCode: PtrInt;//поле, содержащее ID кода выбранного региона страны/ОпСоСа (по умолчанию -1)
+    //поле, содержащее ID кода выбранной страны (по умолчанию -1)
+    FCountryCode: PtrInt;
+    //поле, содержащее ID кода выбранного региона страны/ОпСоСа (по умолчанию -1)
+    FRegionCode: PtrInt;
   public
     property CountryCode: PtrInt read FCountryCode write FCountryCode;
     property RegionCode: PtrInt read FRegionCode write FRegionCode;
@@ -43,7 +46,7 @@ implementation
 
 procedure TfrPhonesPnl.edtCountryCodeKeyPress(Sender: TObject; var Key: char);
 begin
-  if not (Key in ['0'..'9']) then Key:= #0;
+  if not (Key in ['0'..'9', chr(VK_BACK)]) then Key:= #0;
 end;
 
 end.

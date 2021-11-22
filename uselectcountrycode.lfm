@@ -95,7 +95,7 @@ object frmSelectCountry: TfrmSelectCountry
         Title.Alignment = taCenter
         Title.Caption = 'Страна'
         Width = 54
-        FieldName = 'NAME'
+        FieldName = 'NAME_I18N'
       end>
     DataSource = DSSelectCountry
     Options = [dgTitles, dgIndicator, dgColLines, dgRowLines, dgRowSelect, dgAlwaysShowSelection, dgAnyButtonCanSelect, dgCellHints, dgTruncCellHints, dgCellEllipsis]
@@ -117,6 +117,7 @@ object frmSelectCountry: TfrmSelectCountry
       Category = 'app'
       Caption = 'ActBtnCancel'
       OnExecute = ActBtnCancelExecute
+      ShortCut = 27
     end
     object ActQrySelect: TAction
       Category = 'select'
@@ -126,11 +127,11 @@ object frmSelectCountry: TfrmSelectCountry
   end
   object DSSelectCountry: TDataSource
     AutoEdit = False
-    DataSet = qryContryCode
+    DataSet = qryCountryCode
     Left = 64
     Top = 96
   end
-  object qryContryCode: TIBQuery
+  object qryCountryCode: TIBQuery
     Database = frmPhonesEdit.IBDatabase1
     Transaction = frmPhonesEdit.IBTransaction1
     AutoStartTransaction = True

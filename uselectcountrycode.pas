@@ -22,7 +22,7 @@ type
     DSSelectCountry: TDataSource;
     grSelectCountry: TDBGrid;
     edtFilter: TEdit;
-    qryContryCode: TIBQuery;
+    qryCountryCode: TIBQuery;
     lblFilter: TLabel;
     procedure ActBtnCancelExecute(Sender: TObject);
     procedure ActBtnSelectExecute(Sender: TObject);
@@ -63,23 +63,23 @@ end;
 
 procedure TfrmSelectCountry.ActBtnSelectExecute(Sender: TObject);
 begin
-  IDCountry:= qryContryCode.FN('ID').Value;
+  IDCountry:= qryCountryCode.FN('ID').Value;
   ModalResult:= mrOK;
 end;
 
 procedure TfrmSelectCountry.ActQrySelectExecute(Sender: TObject);
 begin
-  with qryContryCode do
+  with qryCountryCode do
   begin
     DisableControls;
     try
       try
         if Active then Active:= False;
-        SQL.Text:= 'SELECT ID, CODE, NAME ' +
+        SQL.Text:= 'SELECT ID, CODE, NAME_I18N ' +
                    'FROM TBL_COUNTRY ' +
                    'WHERE (ID > 0)';
         if (UTF8Trim(edtFilter.Text) <> '')
-          then SQL.Text:= SQL.Text + ' AND (NAME CONTAINING :prmNAME)';
+          then SQL.Text:= SQL.Text + ' AND (NAME_I18N CONTAINING :prmNAME)';
         Prepare;
         if (UTF8Trim(edtFilter.Text) <> '')
           then ParamByName('prmNAME').Value:= UTF8Trim(edtFilter.Text);
