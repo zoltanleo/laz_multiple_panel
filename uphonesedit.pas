@@ -232,13 +232,13 @@ begin
       if not IsEmpty then
       begin
         Result:= True;
-        aName:= '|';
+        aName:= '~';
         First;
         aID:= FN('ID').Value;//присвоим первый подходящий из списка ID
 
         while not EOF do
         begin
-          aName:= aName + FN('LOCATE_NAME').Value + '|';
+          aName:= aName + FN('LOCATE_NAME').Value + '~';
           Next;
         end;
       end;
@@ -336,7 +336,7 @@ begin
           if TObject(Controls[i]).InheritsFrom(TEdit) then
           begin
             TEdit(Controls[i]).ShowHint:= True;
-            TEdit(Controls[i]).Hint:= '';
+            //TEdit(Controls[i]).Hint:= '';
             TEdit(Controls[i]).OnChange:= @ActEdtChangeExecute;
           end;
 
@@ -464,6 +464,7 @@ begin
       Exit;
     end;
 
+
     if not TryStrToInt(UTF8Trim(TEdit(Sender).Text),i) then
     begin
       Application.MessageBox(PChar('Введенное значение не является числом'),
@@ -483,10 +484,9 @@ begin
                                   PChar('Некорректные данные'),
                                   MB_ICONINFORMATION);
 
-        TEdit(Sender).Hint:= '';
-        //задаем проперть, чтобы при выборе кода региона сначала была задан код страны
+        TEdit(Sender).Hint:= tmpStr;
+        //задаем проперть, чтобы при выборе кода региона сначала был задан код страны
         TfrPhonesPnl(TEdit(Sender).Parent).CountryCode:= tmpCode;
-        Exit;
       end
     else
       begin
@@ -520,13 +520,15 @@ begin
 
     if not TryStrToInt(UTF8Trim(TEdit(Sender).Text),i) then
     begin
-      Application.MessageBox(PChar('Введенное значение не является числом'),
+      Application.MessageBox(PChar('Введенное значение не является числом.'),
                             PChar('Некорректные данные'),
                             MB_ICONINFORMATION);
       scrboxPhonesPnl.ScrollInView(TEdit(Sender));
       if TEdit(Sender).CanSetFocus then  TEdit(Sender).SetFocus;
       Exit;
     end;
+
+     if TfrPhonesPnl(TEdit(Sender).Parent).chbMobile.Checked then Exit;
 
     if not GetRegionIDByCode(TfrPhonesPnl(TEdit(Sender).Parent).CountryCode, i, tmpCode, tmpStr)
     then
@@ -538,10 +540,9 @@ begin
                                 PChar('Некорректные данные'),
                                 MB_ICONINFORMATION);
         TEdit(Sender).Clear;
-        TEdit(Sender).Hint:= '';
+        TEdit(Sender).Hint:= tmpStr;
         //задаем проперть, чтобы код региона задавался автоматически при его редактировании
         TfrPhonesPnl(TEdit(Sender).Parent).RegionCode:= tmpCode;
-        Exit;
       end
     else
       begin
@@ -549,6 +550,7 @@ begin
         //задаем проперть, чтобы код региона задавался автоматически при его редактировании
         TfrPhonesPnl(TEdit(Sender).Parent).RegionCode:= tmpCode;
       end;
+
   end;{edtRegionCode}
 end;
 

@@ -5,8 +5,18 @@ unit uselectregioncode;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, DBGrids,
-  ActnList, IBQuery, DB, generics.Collections;
+  Classes
+  , SysUtils
+  , Forms
+  , Controls
+  , Graphics
+  , Dialogs
+  , StdCtrls
+  , DBGrids
+  , ActnList
+  , IBQuery
+  , DB
+  , generics.Collections;
 
 type
 
@@ -41,10 +51,12 @@ type
   private
     FDepartList: TDepartList;//список регионов страны
     FIDCountry: PtrInt;//ID выбранной страны
+    FIDDepart: PtrInt;//ID выбранной области
     FIDRegion: PtrInt;//ID выбранного региона
   public
     property IDCountry: PtrInt read FIDCountry write FIDCountry;
     property IDRegion: PtrInt read FIDRegion write FIDRegion;
+    property IDDepart: PtrInt read FIDDepart write FIDDepart;
     property DepartList: TDepartList read FDepartList write FDepartList;
   end;
 

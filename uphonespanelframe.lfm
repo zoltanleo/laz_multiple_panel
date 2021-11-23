@@ -23,6 +23,8 @@ object frPhonesPnl: TfrPhonesPnl
     AutoSize = False
     BorderSpacing.Top = 5
     OnKeyPress = edtCountryCodeKeyPress
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 0
     Text = 'edtCountryCode'
   end
@@ -55,6 +57,8 @@ object frPhonesPnl: TfrPhonesPnl
     AutoSize = False
     BorderSpacing.Top = 5
     OnKeyPress = edtCountryCodeKeyPress
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 2
     Text = 'edtRegionCode'
   end
@@ -86,6 +90,8 @@ object frPhonesPnl: TfrPhonesPnl
     BorderSpacing.Top = 5
     BorderSpacing.Right = 10
     OnKeyPress = edtCountryCodeKeyPress
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 4
     Text = 'edtNumber'
   end

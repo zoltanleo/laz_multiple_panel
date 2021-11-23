@@ -13,6 +13,7 @@ object frmSelectCountry: TfrmSelectCountry
   OnCreate = FormCreate
   OnShow = FormShow
   ShowHint = True
+  LCLVersion = '2.3.0.0'
   object edtFilter: TEdit
     AnchorSideLeft.Control = lblFilter
     AnchorSideLeft.Side = asrBottom

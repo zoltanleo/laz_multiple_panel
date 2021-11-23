@@ -9,6 +9,7 @@ object frmSelectRegion: TfrmSelectRegion
   OnClose = FormClose
   OnCreate = FormCreate
   OnShow = FormShow
+  LCLVersion = '2.3.0.0'
   object edtFilter: TEdit
     AnchorSideLeft.Control = cbbRegion
     AnchorSideTop.Control = cbbRegion
