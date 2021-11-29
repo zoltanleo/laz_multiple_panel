@@ -8,12 +8,11 @@ object frmSelectCountry: TfrmSelectCountry
   ClientHeight = 297
   ClientWidth = 403
   KeyPreview = True
-  OnClick = FormClick
   OnClose = FormClose
   OnCreate = FormCreate
+  OnResize = FormResize
   OnShow = FormShow
   ShowHint = True
-  LCLVersion = '2.3.0.0'
   object edtFilter: TEdit
     AnchorSideLeft.Control = lblFilter
     AnchorSideLeft.Side = asrBottom

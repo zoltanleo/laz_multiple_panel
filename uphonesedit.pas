@@ -294,12 +294,15 @@ begin
         chbMainContact.Checked:= (frIndex = 0);//чекаем только на верхней панели
         CountryCode:= -1;
         RegionCode:= -1;
+        DepartNum:= -1;
+
         chbMainContact.OnChange:= @ActChbMainContactCheckExecute;
         chbMobile.OnChange:= @ActChbMobileStateChgExecute;
         btnSelectCountryCode.OnClick:= @ActSelectCountryCodeExecute;
         btnSelectRegionCode.OnClick:= @ActSelectRegionCodeExecute;
         edtCountryCode.OnEditingDone:=@ActEdtEditingDoneExecute;
         edtRegionCode.OnEditingDone:=@ActEdtEditingDoneExecute;
+        lblRegionCode.AutoSize:= False;
         //frPhonesPnl.OnDblClick:= @TempAct;
 
         if (frIndex = 0) //первый элемент списка (т.е. самый верхний фрэйм на форме)
@@ -336,7 +339,7 @@ begin
           if TObject(Controls[i]).InheritsFrom(TEdit) then
           begin
             TEdit(Controls[i]).ShowHint:= True;
-            //TEdit(Controls[i]).Hint:= '';
+            TEdit(Controls[i]).Hint:= '';
             TEdit(Controls[i]).OnChange:= @ActEdtChangeExecute;
           end;
 
@@ -392,8 +395,12 @@ begin
 end;
 
 procedure TfrmPhonesEdit.ActChbMobileStateChgExecute(Sender: TObject);
+const
+  CaptMobile = 'Код мобильного оператора';
+  CaptLocate = 'Код населенного пункта';
 var
   ParentCtrl: TfrPhonesPnl = nil;
+  CaptLen: PtrInt = 0;
 begin
   if TObject(Sender).InheritsFrom(TfrPhonesPnl)
     then ParentCtrl:= TfrPhonesPnl(Sender)
@@ -408,9 +415,17 @@ begin
     begin
       ParentCtrl.edtRegionCode.Clear;
       ParentCtrl.edtRegionCode.MaxLength:= 3;
+      ParentCtrl.lblRegionCode.Caption:= CaptMobile;
     end
   else
+    begin
       ParentCtrl.edtRegionCode.MaxLength:= 0;
+      ParentCtrl.lblRegionCode.Caption:= CaptLocate;
+    end;
+
+  if (Self.Canvas.TextWidth(CaptMobile) > Self.Canvas.TextWidth(CaptLocate))
+    then ParentCtrl.lblRegionCode.Width:= Self.Canvas.TextWidth(CaptMobile)
+    else ParentCtrl.lblRegionCode.Width:= Self.Canvas.TextWidth(CaptLocate);
 
   ActUIRefreshExecute(Sender);
   { #todo : Реализовать подбор маски edtRegionCode в зависимости от выбранной страны }
@@ -701,35 +716,43 @@ begin
       else Exit;
     end;
 
-  if (UTF8Trim(SenderPrt.edtCountryCode.Text) = '') then
+  if SenderPrt.chbMobile.Checked then Exit;
+
+  if (SenderPrt.CountryCode = -1) then
   begin
     scrboxPhonesPnl.ScrollInView(SenderPrt);
-    if Application.MessageBox(PChar('Вы не ввели код страны. Хотите ' +
-                                     'воспользоваться справочником для выбора корректного значения?'),
+    Application.MessageBox(PChar('Вы не ввели код страны. Для выбора корректного значения ' +
+                                  'Вы можете воспользоваться встроенным справочником.'),
                               PChar('Некорректные данные'),
-                              MB_ICONINFORMATION + MB_YESNO) = IDYES
-    then
-      ActSelectCountryCodeExecute(SenderPrt)
-    else
-      begin
-        if SenderPrt.edtCountryCode.CanSetFocus then SenderPrt.edtCountryCode.SetFocus;
-        Exit;
-      end;
+                              MB_ICONINFORMATION);
+    if SenderPrt.edtCountryCode.CanSetFocus then SenderPrt.edtCountryCode.SetFocus;
+    Exit;
   end;
 
-  scrboxPhonesPnl.ScrollInView(SenderPrt.btnSelectRegionCode);
   frmRegion:= TfrmSelectRegion.Create(Self);
   try
     with frmRegion do
     begin
       Position:= poOwnerFormCenter;
-      IDCountry:= SenderPrt.CountryCode;
       IDRegion:= SenderPrt.RegionCode;
+      IDCountry:= SenderPrt.CountryCode;
+      IDDepart:= SenderPrt.DepartNum;
       ShowModal;
 
       if (ModalResult = mrOK) then
       begin
+        if (IDRegion <> SenderPrt.RegionCode) then SenderPrt.RegionCode:= IDRegion;
+        IF (IDDepart <> SenderPrt.DepartNum) THEN SenderPrt.DepartNum:= IDDepart;
 
+        SenderPrt.edtRegionCode.Text:= qryLocateCode.FN('LOCATE_CODE').Value;
+
+        if (cbbRegion.ItemIndex = 0)
+        then
+          SenderPrt.edtRegionCode.Hint:= qryLocateCode.FN('LOCATE_NAME').Value
+        else
+          SenderPrt.edtRegionCode.Hint:= Format('%s (%s)',
+                                       [qryLocateCode.FN('LOCATE_NAME').AsString,
+                                        cbbRegion.Items[cbbRegion.ItemIndex]]);
       end;
     end;
   finally

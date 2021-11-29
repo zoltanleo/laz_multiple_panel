@@ -3,28 +3,30 @@ object frmSelectRegion: TfrmSelectRegion
   Height = 300
   Top = 31
   Width = 447
+  BorderIcons = []
   Caption = 'frmSelectRegion'
   ClientHeight = 300
   ClientWidth = 447
   OnClose = FormClose
   OnCreate = FormCreate
+  OnResize = FormResize
   OnShow = FormShow
-  LCLVersion = '2.3.0.0'
   object edtFilter: TEdit
     AnchorSideLeft.Control = cbbRegion
     AnchorSideTop.Control = cbbRegion
     AnchorSideTop.Side = asrBottom
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
-    Left = 70
+    Left = 59
     Height = 23
     Top = 43
-    Width = 367
+    Width = 378
     Anchors = [akTop, akLeft, akRight]
     BorderSpacing.Top = 10
     BorderSpacing.Right = 10
     BorderSpacing.Bottom = 10
-    TabOrder = 0
+    OnChange = edtFilterChange
+    TabOrder = 1
     Text = 'edtFilter'
   end
   object lblRegion: TLabel
@@ -36,16 +38,16 @@ object frmSelectRegion: TfrmSelectRegion
     Left = 10
     Height = 15
     Top = 14
-    Width = 50
+    Width = 39
     BorderSpacing.Around = 10
-    Caption = 'lblRegion'
+    Caption = 'Регион'
   end
   object lblFilter: TLabel
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = edtFilter
     AnchorSideTop.Side = asrCenter
     AnchorSideRight.Control = edtFilter
-    Left = 19
+    Left = 8
     Height = 15
     Top = 47
     Width = 41
@@ -60,15 +62,16 @@ object frmSelectRegion: TfrmSelectRegion
     AnchorSideTop.Control = Owner
     AnchorSideRight.Control = Owner
     AnchorSideRight.Side = asrBottom
-    Left = 70
+    Left = 59
     Height = 23
     Top = 10
-    Width = 367
+    Width = 378
     Anchors = [akTop, akLeft, akRight]
+    AutoDropDown = True
     BorderSpacing.Around = 10
     ItemHeight = 15
-    TabOrder = 1
-    Text = 'cbbRegion'
+    OnChange = cbbRegionChange
+    TabOrder = 0
   end
   object btnRight: TButton
     AnchorSideRight.Control = Owner
@@ -82,7 +85,9 @@ object frmSelectRegion: TfrmSelectRegion
     Anchors = [akRight, akBottom]
     BorderSpacing.Around = 10
     Caption = 'btnRight'
-    TabOrder = 2
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 3
   end
   object btnLeft: TButton
     AnchorSideRight.Control = btnRight
@@ -95,7 +100,9 @@ object frmSelectRegion: TfrmSelectRegion
     Anchors = [akRight, akBottom]
     BorderSpacing.Around = 10
     Caption = 'btnLeft'
-    TabOrder = 3
+    ParentShowHint = False
+    ShowHint = True
+    TabOrder = 4
   end
   object grSelectRegion: TDBGrid
     AnchorSideLeft.Control = Owner
@@ -108,23 +115,33 @@ object frmSelectRegion: TfrmSelectRegion
     Height = 179
     Top = 76
     Width = 427
+    AlternateColor = clMenu
     Anchors = [akTop, akLeft, akRight, akBottom]
+    AutoEdit = False
     BorderSpacing.Around = 10
     Color = clWindow
     Columns = <    
       item
-        Title.Caption = 'Title'
-        FieldName = 'code'
+        Alignment = taCenter
+        Title.Alignment = taCenter
+        Title.Caption = 'Телефонный код'
+        FieldName = 'LOCATE_CODE'
       end    
       item
-        Title.Caption = 'Title'
+        Title.Alignment = taCenter
+        Title.Caption = 'Наименование населенного пункта'
+        FieldName = 'LOCATE_NAME'
       end>
     DataSource = DSSelectRegion
-    TabOrder = 4
+    Options = [dgTitles, dgIndicator, dgColLines, dgRowLines, dgRowSelect, dgAlwaysShowSelection, dgCancelOnExit, dgCellHints, dgTruncCellHints, dgCellEllipsis]
+    ReadOnly = True
+    ShowHint = True
+    TabOrder = 2
+    OnDblClick = ActBtnSelectExecute
   end
   object DSSelectRegion: TDataSource
     AutoEdit = False
-    DataSet = qryLocatCode
+    DataSet = qryLocateCode
     Left = 67
     Top = 129
   end
@@ -141,8 +158,25 @@ object frmSelectRegion: TfrmSelectRegion
       Caption = 'ActCbbDepartFill'
       OnExecute = ActCbbDepartFillExecute
     end
+    object ActBtnSelect: TAction
+      Category = 'execute'
+      Caption = 'ActBtnSelect'
+      OnExecute = ActBtnSelectExecute
+      ShortCut = 16397
+    end
+    object ActBtnCancel: TAction
+      Category = 'execute'
+      Caption = 'ActBtnCancel'
+      OnExecute = ActBtnCancelExecute
+      ShortCut = 27
+    end
+    object ActQryLocate: TAction
+      Category = 'database'
+      Caption = 'ActQryLocate'
+      OnExecute = ActQryLocateExecute
+    end
   end
-  object qryLocatCode: TIBQuery
+  object qryLocateCode: TIBQuery
     Database = frmPhonesEdit.IBDatabase1
     Transaction = frmPhonesEdit.IBTransaction1
     AutoStartTransaction = True

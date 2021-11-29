@@ -31,11 +31,14 @@ type
   private
     //поле, содержащее ID кода выбранной страны (по умолчанию -1)
     FCountryCode: PtrInt;
-    //поле, содержащее ID кода выбранного региона страны/ОпСоСа (по умолчанию -1)
+    //поле, содержащее ItemIndex списка выбранного региона страны/ОпСоСа (по умолчанию -1)
+    FDepartNum: PtrInt;
+    //поле, содержащее ID кода выбранного населенного пункта/ОпСоСа (по умолчанию -1)
     FRegionCode: PtrInt;
   public
     property CountryCode: PtrInt read FCountryCode write FCountryCode;
     property RegionCode: PtrInt read FRegionCode write FRegionCode;
+    property DepartNum: PtrInt read FDepartNum write FDepartNum;
   end;
 
 implementation
