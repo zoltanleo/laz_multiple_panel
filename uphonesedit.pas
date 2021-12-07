@@ -770,8 +770,8 @@ begin
 
   if (Self.FrmEditMode = emEdit) then
   begin
-    PnlObjList.Items[i].btnPnlLeft.Visible:= False;
-    PnlObjList.Items[i].btnPnlRight.Visible:= False;
+    TfrPhonesPnl(Sender).btnPnlLeft.Visible:= False;
+    TfrPhonesPnl(Sender).btnPnlRight.Visible:= False;
     Exit;
   end;
 
