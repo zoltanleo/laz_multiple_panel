@@ -364,6 +364,7 @@ begin
         edtRegionCode.Clear;
         edtNumber.Clear;
         memoNote.Clear;
+        ActChbMobileStateChgExecute(frPhonesPnl);
 
         if edtCountryCode.CanSetFocus then edtCountryCode.SetFocus;
         ActUIRefreshExecute(Sender);//обновляем UI  соответственно настройкам и флагам
