@@ -418,9 +418,9 @@ begin
       ParentCtrl.edtRegionCode.MaxLength:= 3;
       ParentCtrl.lblRegionCode.Caption:= CaptMobile;
     end
-  else
+  else //для кодов населенных пунктов 5 цифр
     begin
-      ParentCtrl.edtRegionCode.MaxLength:= 0;
+      ParentCtrl.edtRegionCode.MaxLength:= 5;
       ParentCtrl.lblRegionCode.Caption:= CaptLocate;
     end;
 
