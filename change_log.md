@@ -1,3 +1,8 @@
+v.0.1.12
+
+- пепреписаны функции GetCountryIDByCode и GetRegionIDByCode
+- переписан код в ActEdtEditingDoneExecute и ActChbMobileStateChgExecute
+
 v.0.1.11
 
 - для кодов населенных пунктов edtRegionCode.MaxLength сделано 5 цифр
