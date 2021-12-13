@@ -1,6 +1,10 @@
+v.0.1.13
+
+- в функции GetCountryIDByCode и GetRegionIDByCode добавлен параметр ShowMsg (по умолчанию True), позволяющий подавлять вывод сообщений внутри функций
+
 v.0.1.12
 
-- пепреписаны функции GetCountryIDByCode и GetRegionIDByCode
+- переписаны функции GetCountryIDByCode и GetRegionIDByCode
 - переписан код в ActEdtEditingDoneExecute и ActChbMobileStateChgExecute
 
 v.0.1.11

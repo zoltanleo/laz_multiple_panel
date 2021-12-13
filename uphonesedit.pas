@@ -5,9 +5,23 @@ unit uphonesedit;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  ActnList, LCLType, LazUTF8, uphonespanelframe, uselectcountrycode,
-  uselectregioncode, IBDatabase, IBQuery, Generics.Collections;
+  Classes
+  , SysUtils
+  , Forms
+  , Controls
+  , Graphics
+  , Dialogs
+  , StdCtrls
+  , ExtCtrls
+  , ActnList
+  , LCLType
+  , LazUTF8
+  , uphonespanelframe
+  , uselectcountrycode
+  , uselectregioncode
+  , IBDatabase
+  , IBQuery
+  , Generics.Collections;
 
 type
   //режим вызова модального окна: добавление/редактирование записи
@@ -71,10 +85,14 @@ type
     //* пустого значения поля возращается False-результат;
     //* нечислового значения содержимое поля очищается и возращается False-результат;
     //* False-результата для фрейма-родителя проперть CountryCode= -1 и хинт поля очищается;
-    function GetCountryIDByCode(Sender: TEdit): Boolean;
-    //проверка наличия региона aRegionCode по коду страны aCountryCode с возвратом
-    //полученного(ных) названия(й) региона(ов) в aName и как минимум певрого ID региона в aID
-    function GetRegionIDByCode(Sender: TEdit): Boolean;
+    //* ShowMsg = True предупреждения не выдаются
+    function GetCountryIDByCode(Sender: TEdit; ShowMsg: Boolean=True): Boolean;
+    //проверка наличия регионапо содержимому TEdit. В случае:
+    //* пустого значения поля возращается False-результат;
+    //* нечислового значения содержимое поля очищается и возращается False-результат;
+    //* False-результата для фрейма-родителя проперть RegionCode= -1 и хинт поля очищается;
+    //* ShowMsg = True предупреждения не выдаются
+    function GetRegionIDByCode(Sender: TEdit; ShowMsg: Boolean=True): Boolean;
     procedure SetPnlObjList(AValue: TPnlObjList);
   public
     property MaxPnlCount: PtrInt read FMaxPnlCount;//макс.кол-во панелей (из настроек)
@@ -169,7 +187,8 @@ begin
   btnPhoneBaseConnClick(Sender);
 end;
 
-function TfrmPhonesEdit.GetCountryIDByCode(Sender: TEdit): Boolean;
+function TfrmPhonesEdit.GetCountryIDByCode(Sender: TEdit; ShowMsg: Boolean
+  ): Boolean;
 var
   aCountryCode: LongInt = -1;
 begin
@@ -183,6 +202,7 @@ begin
 
   if not TryStrToInt(UTF8Trim(TEdit(Sender).Text),aCountryCode) then
   begin
+    if ShowMsg then
     Application.MessageBox(PChar(Format('Введенное значение "%s" не является числом',
                                          [UTF8Trim(TEdit(Sender).Text)])),
                           PChar('Некорректные данные'),
@@ -210,6 +230,7 @@ begin
           TEdit(Sender).Hint:= FN('NAME_I18N').Value;
         end
       else
+        if ShowMsg then
         Application.MessageBox(PChar('Введенный код не соответствует ни одной стране мира в вашей ' +
                                       'базе данных. Для выбора корректного значения Вы можете ' +
                                       'воспользоваться справочником.'),
@@ -226,7 +247,8 @@ begin
   end;
 end;
 
-function TfrmPhonesEdit.GetRegionIDByCode(Sender: TEdit): Boolean;
+function TfrmPhonesEdit.GetRegionIDByCode(Sender: TEdit; ShowMsg: Boolean
+  ): Boolean;
 var
   aName: String = '~';
   aCountryCode: LongInt = -1;
@@ -243,6 +265,7 @@ begin
   if not TryStrToInt(UTF8Trim(TEdit(TfrPhonesPnl(TEdit(Sender).Parent).edtCountryCode).Text),
                                     aCountryCode) then
   begin
+    if ShowMsg then
     Application.MessageBox(PChar(Format('Введенное значение "%s" не является числом',
                                          [UTF8Trim(TEdit(TfrPhonesPnl(TEdit(Sender).Parent).edtCountryCode).Text)])),
                           PChar('Некорректные данные'),
@@ -299,6 +322,7 @@ begin
           TEdit(Sender).Hint:= aName;
         end
       else
+        if ShowMsg then
         Application.MessageBox(PChar('Для выбранной страны населенного пункта с ' +
                                       'таким кодом в вашей базе данных не найдено. ' +
                                       'Для выбора корректного значения попробуйте ' +
@@ -547,7 +571,7 @@ begin
   begin
     if not IsPhoneBaseConn then Exit;
 
-    if not GetCountryIDByCode(TfrPhonesPnl(TEdit(Sender).Parent).edtCountryCode) then
+    if not GetCountryIDByCode(TfrPhonesPnl(TEdit(Sender).Parent).edtCountryCode, False) then
     begin
       scrboxPhonesPnl.ScrollInView(TfrPhonesPnl(TEdit(Sender).Parent).edtCountryCode);
       if TfrPhonesPnl(TEdit(Sender).Parent).edtCountryCode.CanSetFocus then
